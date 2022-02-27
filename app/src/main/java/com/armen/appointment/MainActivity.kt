@@ -4,21 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,23 +33,108 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppointmentTheme {
-                Box(
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(
                             brush = Brush.verticalGradient(
                                 listOf(
-                                    Color.Blue,
+                                    Color(0xFF4C4CF5),
                                     Color(0xFFCC00CC)
                                 )
                             )
                         )
+                        .padding(32.dp)
                 ) {
+                    HorizontalDivider()
                     DoctorText()
                     DoctorsRadioGroup()
+                    HorizontalDivider()
+                    LazyColumn {
+                        item {
+                            Doctors()
+                            Doctors()
+                            Doctors()
+                        }
+                    }
                 }
             }
         }
+    }
+
+    @Composable
+    private fun Doctors() {
+        DoctorCard(
+            doctor = Doctor(
+                drawableId = R.drawable.dr7,
+                name = "Dr. James Smith",
+                rating = 70
+            )
+        )
+        DoctorCard(
+            doctor = Doctor(
+                drawableId = R.drawable.cwells2,
+                name = "Dr. Marcus Brady",
+                rating = 65
+            )
+        )
+        DoctorCard(
+            doctor = Doctor(
+                drawableId = R.drawable.averma2,
+                name = "Dr. Leroy Jenkins",
+                rating = 40
+            )
+        )
+    }
+
+    @Composable
+    private fun DoctorCard(doctor: Doctor) {
+        Card(
+            elevation = 4.dp,
+            shape = RoundedCornerShape(CornerSize(4.dp)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = doctor.drawableId),
+                    contentDescription = "avatar",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 16.dp)
+                        .size(64.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, Color.Gray, CircleShape)
+                )
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, top = 16.dp)
+                            .height(32.dp)
+                    ) {
+                        Text(
+                            text = doctor.name,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = "${doctor.rating}%",
+                            Modifier.padding(start = 56.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun HorizontalDivider() {
+        Divider(color = Color.Gray, thickness = 1.dp)
     }
 
     @Composable
@@ -56,7 +144,7 @@ class MainActivity : ComponentActivity() {
             color = Color.White,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 32.dp, top = 64.dp)
+            modifier = Modifier.padding(top = 16.dp, start = 8.dp)
         )
     }
 
@@ -70,7 +158,7 @@ class MainActivity : ComponentActivity() {
         val onSelected = { text: String ->
             selected.value = text
         }
-        Row(modifier = Modifier.padding(start = 24.dp, top = 128.dp)) {
+        Row(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
             options.forEach { text ->
                 val isSelected = text == selected.value
                 OutlinedButton(
