@@ -22,7 +22,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,11 +43,11 @@ class MainActivity : ComponentActivity() {
                             brush = Brush.verticalGradient(
                                 listOf(
                                     Color(0xFF4C4CF5),
-                                    Color(0xFFCC00CC)
+                                    Color(0xFF8C66F3)
                                 )
                             )
                         )
-                        .padding(32.dp)
+                        .padding(20.dp)
                 ) {
                     HorizontalDivider()
                     DoctorText()
@@ -52,8 +55,6 @@ class MainActivity : ComponentActivity() {
                     HorizontalDivider()
                     LazyColumn {
                         item {
-                            Doctors()
-                            Doctors()
                             Doctors()
                         }
                     }
@@ -68,33 +69,49 @@ class MainActivity : ComponentActivity() {
             doctor = Doctor(
                 drawableId = R.drawable.dr7,
                 name = "Dr. James Smith",
-                rating = 70
+                rating = 70,
+                role = "MBBS, MB - General Medicine",
+                profession = "General Physician",
+                experience = 10,
+                feedbacks = 12,
+                available = "Salt lake"
             )
         )
         DoctorCard(
             doctor = Doctor(
                 drawableId = R.drawable.cwells2,
                 name = "Dr. Marcus Brady",
-                rating = 65
+                rating = 65,
+                role = "MBBS, MB - General Medicine",
+                profession = "Number #1 bullshit guy",
+                experience = 10,
+                feedbacks = 13,
+                available = "Glen Park"
             )
         )
         DoctorCard(
             doctor = Doctor(
                 drawableId = R.drawable.averma2,
                 name = "Dr. Leroy Jenkins",
-                rating = 40
+                rating = 40,
+                role = "MBBS, MB - General Medicine",
+                profession = "General Physician",
+                experience = 5,
+                feedbacks = 20,
+                available = "Nowhere"
             )
         )
     }
 
     @Composable
-    private fun DoctorCard(doctor: Doctor) {
+    private fun DoctorCard(doctor: Doctor) { // ?? preview
         Card(
-            elevation = 4.dp,
-            shape = RoundedCornerShape(CornerSize(4.dp)),
+            elevation = 8.dp,
+            shape = RoundedCornerShape(CornerSize(12.dp)),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(8.dp),
+            backgroundColor = Color.White
         ) {
             Row(
                 modifier = Modifier
@@ -111,21 +128,60 @@ class MainActivity : ComponentActivity() {
                         .clip(CircleShape)
                         .border(2.dp, Color.Gray, CircleShape)
                 )
-                Column(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 16.dp, top = 16.dp)
-                            .height(32.dp)
                     ) {
                         Text(
                             text = doctor.name,
                             fontWeight = FontWeight.SemiBold
                         )
-                        Text(
+                        Text( // ??? to end
                             text = "${doctor.rating}%",
-                            Modifier.padding(start = 56.dp)
+                            Modifier.padding(start = 48.dp),
+                            fontSize = 12.sp
                         )
+                    }
+                    Text(doctor.role, fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
+                    Text(doctor.profession, fontSize = 10.sp)
+                    HorizontalDivider()
+                    Row {
+                        Text("${doctor.experience} years of experience", fontSize = 10.sp)
+                        Text(
+                            "${doctor.feedbacks} feedbacks",
+                            fontSize = 10.sp,
+                            modifier = Modifier.padding(start = 24.dp)
+                        )
+                    }
+                    HorizontalDivider()
+                    Text(
+                        buildAnnotatedString {
+                            append("Available Tomorrow at ")
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(doctor.available)
+                            }
+                        }, fontSize = 12.sp
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedButton(
+                            onClick = { },
+                            shape = RoundedCornerShape(16.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.White)
+                        ) {
+                            Text("Timing", color = Color.Gray, fontSize = 10.sp)
+                        }
+                        OutlinedButton(
+                            onClick = { },
+                            shape = RoundedCornerShape(16.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
+                        ) {
+                            Text("Book Appointment", color = Color.White, fontSize = 10.sp)
+                        }
                     }
                 }
             }
@@ -134,7 +190,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun HorizontalDivider() {
-        Divider(color = Color.Gray, thickness = 1.dp)
+        Divider(color = Color.Gray)
     }
 
     @Composable
