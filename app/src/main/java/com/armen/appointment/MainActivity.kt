@@ -16,6 +16,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -103,8 +105,24 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    @Preview
     @Composable
-    private fun DoctorCard(doctor: Doctor) { // ?? preview
+    private fun DoctorCardPreview() {
+        val doctor = Doctor(
+            drawableId = R.drawable.averma2,
+            name = "Dr. Leroy Jenkins",
+            rating = 40,
+            role = "MBBS, MB - General Medicine",
+            profession = "General Physician",
+            experience = 5,
+            feedbacks = 20,
+            available = "Nowhere"
+        )
+        DoctorCard(doctor)
+    }
+
+    @Composable
+    private fun DoctorCard(doctor: Doctor) {
         Card(
             elevation = 8.dp,
             shape = RoundedCornerShape(CornerSize(12.dp)),
@@ -137,15 +155,27 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
-                        Text(
-                            text = doctor.name,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text( // ??? to end
-                            text = "${doctor.rating}%",
-                            Modifier.padding(start = 48.dp),
-                            fontSize = 12.sp
-                        )
+                        Box(
+                            modifier = Modifier.fillMaxWidth(0.6f)
+                        ) {
+                            Text(
+                                text = doctor.name,
+                                fontWeight = FontWeight.SemiBold,
+                                modifier = Modifier.fillMaxWidth().align(Alignment.CenterStart),
+                                maxLines = 1
+                            )
+                        }
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "${doctor.rating}%",
+                                fontSize = 12.sp,
+                                modifier = Modifier.fillMaxWidth().align(Alignment.CenterEnd),
+                                textAlign = TextAlign.Right,
+                                maxLines = 1
+                            )
+                        }
                     }
                     Text(doctor.role, fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                     Text(doctor.profession, fontSize = 10.sp)
