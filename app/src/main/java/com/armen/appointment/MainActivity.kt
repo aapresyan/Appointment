@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
@@ -79,26 +78,49 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Preview
     @Composable
-    private fun Appointment(id: String, navController: NavHostController?) {
+    private fun AppointmentPreview() {
+        Appointment(id = "0")
+    }
+
+
+    @Composable
+    private fun Appointment(id: String, navController: NavHostController? = null) {
         Card(
             shape = RoundedCornerShape(CornerSize(12.dp)), elevation = 8.dp, modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
             backgroundColor = Color.White
         ) {
-            val textState = remember { mutableStateOf(TextFieldValue()) }
-            DoctorCard(doctor = Doctors[id.toInt()])
-            TextField(value = textState.value, onValueChange = { textState.value = it })
-            OutlinedButton(
-                onClick = {
-                    navController?.popBackStack("appointment", inclusive = true)
-                    Toast.makeText(applicationContext, textState.value.text, Toast.LENGTH_LONG).show()
-                },
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
-            ) {
-                Text("Book Appointment", color = Color.White, fontSize = 10.sp)
+            Column {
+                val textState = remember { mutableStateOf(TextFieldValue()) }
+                DoctorCard(doctor = Doctors[id.toInt()], drawButtons = false)
+                TextField(
+                    value = textState.value,
+                    onValueChange = { textState.value = it },
+                    Modifier
+                        .background(Color.White)
+                        .fillMaxWidth(), placeholder = { Text("Note") })
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedButton(
+                        modifier = Modifier
+                            .padding(end = 16.dp)
+                            .align(Alignment.CenterEnd),
+                        onClick = {
+                            navController?.popBackStack()
+                            Toast.makeText(
+                                applicationContext,
+                                textState.value.text,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
+                    ) {
+                        Text("Book Appointment", color = Color.White, fontSize = 10.sp)
+                    }
+                }
             }
         }
     }
@@ -112,7 +134,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Preview
+    //    @Preview
     @Composable
     private fun DoctorCardPreview() {
         val doctor = Doctor(
@@ -129,7 +151,12 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun DoctorCard(id: Int? = 0, doctor: Doctor, navController: NavHostController? = null) {
+    private fun DoctorCard(
+        id: Int? = 0,
+        doctor: Doctor,
+        navController: NavHostController? = null,
+        drawButtons: Boolean = true
+    ) {
         Card(
             elevation = 8.dp,
             shape = RoundedCornerShape(CornerSize(12.dp)),
@@ -208,20 +235,22 @@ class MainActivity : ComponentActivity() {
                             }
                         }, fontSize = 12.sp
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        OutlinedButton(
-                            onClick = { },
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.White)
-                        ) {
-                            Text("Timing", color = Color.Gray, fontSize = 10.sp)
-                        }
-                        OutlinedButton(
-                            onClick = { navController?.navigate("$id/appointment") },
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
-                        ) {
-                            Text("Book Appointment", color = Color.White, fontSize = 10.sp)
+                    if (drawButtons) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            OutlinedButton(
+                                onClick = { },
+                                shape = RoundedCornerShape(16.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.White)
+                            ) {
+                                Text("Timing", color = Color.Gray, fontSize = 10.sp)
+                            }
+                            OutlinedButton(
+                                onClick = { navController?.navigate("$id/appointment") },
+                                shape = RoundedCornerShape(16.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text("Book Appointment", color = Color.White, fontSize = 10.sp)
+                            }
                         }
                     }
                 }
@@ -246,7 +275,7 @@ class MainActivity : ComponentActivity() {
     }
 
     //hold all UI data in ViewModel and update correspondingly
-    @Preview
+//    @Preview
     @Composable
     private fun DoctorsRadioGroup() {
         val selected = remember { mutableStateOf("Nearest") }
