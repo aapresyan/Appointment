@@ -1,6 +1,7 @@
 package com.armen.appointment
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -9,6 +10,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,17 +29,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.armen.appointment.ui.theme.AppointmentTheme
 
 class MainActivity : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navHostController = rememberNavController()
+
             AppointmentTheme {
                 Column(
                     modifier = Modifier
@@ -55,9 +67,11 @@ class MainActivity : ComponentActivity() {
                     DoctorText()
                     DoctorsRadioGroup()
                     HorizontalDivider()
-                    LazyColumn {
-                        item {
-                            Doctors()
+                    NavHost(navController = navHostController, startDestination = "doctors") {
+                        composable("doctors") { DoctorsList(navHostController) }
+                        composable("{docId}/appointment") { backStackEntry ->
+                            val docId = backStackEntry.arguments?.getString("docId")
+                            docId?.let { Appointment(it, navHostController) }
                         }
                     }
                 }
@@ -66,43 +80,36 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun Doctors() {
-        DoctorCard(
-            doctor = Doctor(
-                drawableId = R.drawable.dr7,
-                name = "Dr. James Smith",
-                rating = 70,
-                role = "MBBS, MB - General Medicine",
-                profession = "General Physician",
-                experience = 10,
-                feedbacks = 12,
-                available = "Salt lake"
-            )
-        )
-        DoctorCard(
-            doctor = Doctor(
-                drawableId = R.drawable.cwells2,
-                name = "Dr. Marcus Brady",
-                rating = 65,
-                role = "MBBS, MB - General Medicine",
-                profession = "Number #1 bullshit guy",
-                experience = 10,
-                feedbacks = 13,
-                available = "Glen Park"
-            )
-        )
-        DoctorCard(
-            doctor = Doctor(
-                drawableId = R.drawable.averma2,
-                name = "Dr. Leroy Jenkins",
-                rating = 40,
-                role = "MBBS, MB - General Medicine",
-                profession = "General Physician",
-                experience = 5,
-                feedbacks = 20,
-                available = "Nowhere"
-            )
-        )
+    private fun Appointment(id: String, navController: NavHostController?) {
+        Card(
+            shape = RoundedCornerShape(CornerSize(12.dp)), elevation = 8.dp, modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            backgroundColor = Color.White
+        ) {
+            val textState = remember { mutableStateOf(TextFieldValue()) }
+            DoctorCard(doctor = Doctors[id.toInt()])
+            TextField(value = textState.value, onValueChange = { textState.value = it })
+            OutlinedButton(
+                onClick = {
+                    navController?.popBackStack("appointment", inclusive = true)
+                    Toast.makeText(applicationContext, textState.value.text, Toast.LENGTH_LONG).show()
+                },
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
+            ) {
+                Text("Book Appointment", color = Color.White, fontSize = 10.sp)
+            }
+        }
+    }
+
+    @Composable
+    private fun DoctorsList(navController: NavHostController) {
+        LazyColumn {
+            itemsIndexed(Doctors) { index, doctor ->
+                DoctorCard(index, doctor = doctor, navController)
+            }
+        }
     }
 
     @Preview
@@ -118,11 +125,11 @@ class MainActivity : ComponentActivity() {
             feedbacks = 20,
             available = "Nowhere"
         )
-        DoctorCard(doctor)
+        DoctorCard(doctor = doctor)
     }
 
     @Composable
-    private fun DoctorCard(doctor: Doctor) {
+    private fun DoctorCard(id: Int? = 0, doctor: Doctor, navController: NavHostController? = null) {
         Card(
             elevation = 8.dp,
             shape = RoundedCornerShape(CornerSize(12.dp)),
@@ -161,7 +168,9 @@ class MainActivity : ComponentActivity() {
                             Text(
                                 text = doctor.name,
                                 fontWeight = FontWeight.SemiBold,
-                                modifier = Modifier.fillMaxWidth().align(Alignment.CenterStart),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.CenterStart),
                                 maxLines = 1
                             )
                         }
@@ -171,7 +180,9 @@ class MainActivity : ComponentActivity() {
                             Text(
                                 text = "${doctor.rating}%",
                                 fontSize = 12.sp,
-                                modifier = Modifier.fillMaxWidth().align(Alignment.CenterEnd),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.CenterEnd),
                                 textAlign = TextAlign.Right,
                                 maxLines = 1
                             )
@@ -206,7 +217,7 @@ class MainActivity : ComponentActivity() {
                             Text("Timing", color = Color.Gray, fontSize = 10.sp)
                         }
                         OutlinedButton(
-                            onClick = { },
+                            onClick = { navController?.navigate("$id/appointment") },
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
                         ) {
