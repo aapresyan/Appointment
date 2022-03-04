@@ -1,6 +1,6 @@
 package com.armen.appointment
 
-val Doctors = listOf(
+val NearestDoctors = listOf(
     Doctor(
         drawableId = R.drawable.dr7,
         name = "Dr. James Smith",
@@ -30,3 +30,5 @@ val Doctors = listOf(
         available = "Nowhere"
     )
 )
+// add Top doctors
+// get the list of top doctors from viewModel

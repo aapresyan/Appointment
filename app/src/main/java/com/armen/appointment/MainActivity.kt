@@ -87,40 +87,43 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun Appointment(id: String, navController: NavHostController? = null) {
-        Card(
-            shape = RoundedCornerShape(CornerSize(12.dp)), elevation = 8.dp, modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            backgroundColor = Color.White
-        ) {
-            Column {
-                val textState = remember { mutableStateOf(TextFieldValue()) }
-                DoctorCard(doctor = Doctors[id.toInt()], drawButtons = false)
-                TextField(
-                    value = textState.value,
-                    onValueChange = { textState.value = it },
-                    Modifier
-                        .background(Color.White)
-                        .fillMaxWidth(), placeholder = { Text("Note") })
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    OutlinedButton(
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .align(Alignment.CenterEnd),
-                        onClick = {
-                            navController?.popBackStack()
-                            Toast.makeText(
-                                applicationContext,
-                                textState.value.text,
-                                Toast.LENGTH_LONG
-                            ).show()
-                        },
-                        shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
-                    ) {
-                        Text("Book Appointment", color = Color.White, fontSize = 10.sp)
+        Column {
+            val textState = remember { mutableStateOf(TextFieldValue()) }
+            DoctorCard(doctor = NearestDoctors[id.toInt()], drawButtons = false)
+            Card(
+                shape = RoundedCornerShape(CornerSize(12.dp)), elevation = 8.dp, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                backgroundColor = Color(0xFFBDC3FF)
+            ) {
+                Column(Modifier.fillMaxWidth()) {
+                    TextField(
+                        value = textState.value,
+                        onValueChange = { textState.value = it },
+                        Modifier
+                            .fillMaxWidth(), placeholder = { Text("Note", color = Color.White) }
+                    )
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        OutlinedButton(
+                            modifier = Modifier
+                                .padding(end = 16.dp)
+                                .align(Alignment.CenterEnd),
+                            onClick = {
+                                navController?.popBackStack()
+                                Toast.makeText(
+                                    applicationContext,
+                                    textState.value.text,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            },
+                            shape = RoundedCornerShape(16.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
+                        ) {
+                            Text("Book Appointment", color = Color.White, fontSize = 10.sp)
+                        }
                     }
                 }
+
             }
         }
     }
@@ -128,7 +131,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun DoctorsList(navController: NavHostController) {
         LazyColumn {
-            itemsIndexed(Doctors) { index, doctor ->
+            itemsIndexed(NearestDoctors) { index, doctor ->
                 DoctorCard(index, doctor = doctor, navController)
             }
         }
