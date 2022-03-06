@@ -76,7 +76,7 @@ fun DoctorCard(
                         .fillMaxWidth()
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxWidth(0.85f)
+                        modifier = Modifier.fillMaxWidth(0.82f)
                     ) {
                         Text(
                             text = doctor.name,
@@ -88,18 +88,24 @@ fun DoctorCard(
                             maxLines = 1
                         )
                     }
-                    Box(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.CenterVertically)
                     ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.heart),
+                            contentDescription = "heart",
+                            modifier = Modifier.align(Alignment.CenterVertically).size(12.dp)
+                        )
                         Text(
                             text = "${doctor.rating}%",
                             fontSize = 12.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.CenterEnd),
                             textAlign = TextAlign.Right,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .size(width = 32.dp, height = 16.dp)
+                                .padding(bottom = 2.dp),
                             maxLines = 1
                         )
                     }
