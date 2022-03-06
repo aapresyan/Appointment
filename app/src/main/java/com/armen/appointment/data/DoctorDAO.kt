@@ -1,4 +1,6 @@
-package com.armen.appointment
+package com.armen.appointment.data
+
+import com.armen.appointment.R
 
 interface DoctorsDao {
     fun getDoctors(): List<Doctor>
@@ -78,7 +80,3 @@ private val NearestDoctors = listOf(
         available = "Chicago DL"
     )
 )
-
-const val NEAREST = "Nearest"
-const val TOP_DOCTORS = "Top Doctors"
-const val FILTER = "Filter"

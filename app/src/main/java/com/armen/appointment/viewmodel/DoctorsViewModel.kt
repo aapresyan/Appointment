@@ -1,8 +1,11 @@
-package com.armen.appointment
+package com.armen.appointment.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.armen.appointment.data.Doctor
+import com.armen.appointment.data.DoctorsDao
+import com.armen.appointment.data.LocalDoctorsDAO
 
 class DoctorsViewModel : ViewModel() {
 
@@ -37,7 +40,7 @@ class DoctorsViewModel : ViewModel() {
         }
     }
 
-    fun getHeaderText() = when(screenState.value) {
+    fun getHeaderText() = when (screenState.value) {
         Screen.Appointment -> selectedDoctor.value.name
         else -> "Doctor"
     }

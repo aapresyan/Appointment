@@ -1,4 +1,4 @@
-package com.armen.appointment
+package com.armen.appointment.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -23,6 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.armen.appointment.R
+import com.armen.appointment.data.Doctor
+import com.armen.appointment.data.LocalDoctorsDAO
+import com.armen.appointment.viewmodel.Screen
 
 @Composable
 fun HorizontalDivider() {
@@ -96,7 +100,9 @@ fun DoctorCard(
                         Image(
                             painter = painterResource(id = R.drawable.heart),
                             contentDescription = "heart",
-                            modifier = Modifier.align(Alignment.CenterVertically).size(12.dp)
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .size(12.dp)
                         )
                         Text(
                             text = "${doctor.rating}%",

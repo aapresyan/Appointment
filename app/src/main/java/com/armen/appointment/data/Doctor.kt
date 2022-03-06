@@ -1,4 +1,4 @@
-package com.armen.appointment
+package com.armen.appointment.data
 
 class Doctor(
     val drawableId: Int = 0,

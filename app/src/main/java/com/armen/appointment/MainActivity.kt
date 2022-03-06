@@ -27,7 +27,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.armen.appointment.composable.Appointment
+import com.armen.appointment.composable.DoctorCard
+import com.armen.appointment.composable.HorizontalDivider
 import com.armen.appointment.ui.theme.AppointmentTheme
+import com.armen.appointment.viewmodel.DoctorsViewModel
+import com.armen.appointment.viewmodel.Screen
+import com.armen.appointment.viewmodel.Tab
 
 class MainActivity : ComponentActivity() {
 

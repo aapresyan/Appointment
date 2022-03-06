@@ -1,8 +1,7 @@
-package com.armen.appointment
+package com.armen.appointment.composable
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.armen.appointment.data.Doctor
+import com.armen.appointment.data.LocalDoctorsDAO
 
 
 @Preview
@@ -32,7 +33,11 @@ private fun AppointmentPreview() {
 
 
 @Composable
-fun Appointment(doctor: Doctor, navController: NavHostController? = null, context: Context? = null) {
+fun Appointment(
+    doctor: Doctor,
+    navController: NavHostController? = null,
+    context: Context? = null
+) {
     Column {
         val textState = remember { mutableStateOf(TextFieldValue()) }
         DoctorCard(doctor = doctor, drawButtons = false)
@@ -49,7 +54,10 @@ fun Appointment(doctor: Doctor, navController: NavHostController? = null, contex
                     modifier = Modifier
                         .fillMaxWidth(),
                     label = { Text(text = "Note") },
-                    colors = TextFieldDefaults.textFieldColors(unfocusedIndicatorColor = Color.Gray, unfocusedLabelColor = Color.Gray),
+                    colors = TextFieldDefaults.textFieldColors(
+                        unfocusedIndicatorColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray
+                    ),
 
                     )
                 Box(modifier = Modifier.fillMaxWidth()) {
