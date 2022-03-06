@@ -1,37 +1,26 @@
 package com.armen.appointment
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -42,6 +31,7 @@ import com.armen.appointment.ui.theme.AppointmentTheme
 
 class MainActivity : ComponentActivity() {
 
+    private val viewModel: DoctorsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,70 +50,35 @@ class MainActivity : ComponentActivity() {
                                 )
                             )
                         )
-                        .padding(20.dp)
+                        .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 ) {
                     HorizontalDivider()
                     DoctorText()
-                    DoctorsRadioGroup()
+                    if (viewModel.screenState.value == Screen.Doctor) {
+                        DoctorsRadioGroup()
+                    }
                     HorizontalDivider()
-                    NavHost(navController = navHostController, startDestination = "doctors") {
-                        composable("doctors") { DoctorsList(navHostController) }
-                        composable("{docId}/appointment") { backStackEntry ->
-                            val docId = backStackEntry.arguments?.getString("docId")
-                            docId?.let { Appointment(it, navHostController) }
+                    NavHost(
+                        navController = navHostController,
+                        startDestination = Screen.Doctor.name
+                    ) {
+                        composable(Screen.Doctor.getRoute()) {
+                            viewModel.postScreenState(Screen.Doctor)
+                            DoctorsList(navHostController)
+                        }
+                        composable(Screen.Appointment.getRoute()) { backStackEntry ->
+                            val docId = backStackEntry.arguments?.getString(Screen.Appointment.key)
+                            val doc = viewModel.getDoctors()[docId?.toInt()
+                                ?: throw RuntimeException("doc not found")]
+                            viewModel.postScreenState(Screen.Appointment)
+                            Appointment(
+                                doc,
+                                navHostController,
+                                applicationContext
+                            )
                         }
                     }
                 }
-            }
-        }
-    }
-
-    @Preview
-    @Composable
-    private fun AppointmentPreview() {
-        Appointment(id = "0")
-    }
-
-
-    @Composable
-    private fun Appointment(id: String, navController: NavHostController? = null) {
-        Column {
-            val textState = remember { mutableStateOf(TextFieldValue()) }
-            DoctorCard(doctor = NearestDoctors[id.toInt()], drawButtons = false)
-            Card(
-                shape = RoundedCornerShape(CornerSize(12.dp)), elevation = 8.dp, modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                backgroundColor = Color(0xFFBDC3FF)
-            ) {
-                Column(Modifier.fillMaxWidth()) {
-                    TextField(
-                        value = textState.value,
-                        onValueChange = { textState.value = it },
-                        Modifier
-                            .fillMaxWidth(), placeholder = { Text("Note", color = Color.White) }
-                    )
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        OutlinedButton(
-                            modifier = Modifier
-                                .padding(end = 16.dp)
-                                .align(Alignment.CenterEnd),
-                            onClick = {
-                                navController?.popBackStack()
-                                Toast.makeText(
-                                    applicationContext,
-                                    textState.value.text,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            },
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
-                        ) {
-                            Text("Book Appointment", color = Color.White, fontSize = 10.sp)
-                        }
-                    }
-                }
-
             }
         }
     }
@@ -131,139 +86,11 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun DoctorsList(navController: NavHostController) {
         LazyColumn {
-            itemsIndexed(NearestDoctors) { index, doctor ->
+            val doctors = viewModel.getDoctors()
+            itemsIndexed(doctors) { index, doctor ->
                 DoctorCard(index, doctor = doctor, navController)
             }
         }
-    }
-
-    //    @Preview
-    @Composable
-    private fun DoctorCardPreview() {
-        val doctor = Doctor(
-            drawableId = R.drawable.averma2,
-            name = "Dr. Leroy Jenkins",
-            rating = 40,
-            role = "MBBS, MB - General Medicine",
-            profession = "General Physician",
-            experience = 5,
-            feedbacks = 20,
-            available = "Nowhere"
-        )
-        DoctorCard(doctor = doctor)
-    }
-
-    @Composable
-    private fun DoctorCard(
-        id: Int? = 0,
-        doctor: Doctor,
-        navController: NavHostController? = null,
-        drawButtons: Boolean = true
-    ) {
-        Card(
-            elevation = 8.dp,
-            shape = RoundedCornerShape(CornerSize(12.dp)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            backgroundColor = Color.White
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = doctor.drawableId),
-                    contentDescription = "avatar",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(start = 16.dp, top = 16.dp)
-                        .size(64.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, Color.Gray, CircleShape)
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(0.6f)
-                        ) {
-                            Text(
-                                text = doctor.name,
-                                fontWeight = FontWeight.SemiBold,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .align(Alignment.CenterStart),
-                                maxLines = 1
-                            )
-                        }
-                        Box(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = "${doctor.rating}%",
-                                fontSize = 12.sp,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .align(Alignment.CenterEnd),
-                                textAlign = TextAlign.Right,
-                                maxLines = 1
-                            )
-                        }
-                    }
-                    Text(doctor.role, fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
-                    Text(doctor.profession, fontSize = 10.sp)
-                    HorizontalDivider()
-                    Row {
-                        Text("${doctor.experience} years of experience", fontSize = 10.sp)
-                        Text(
-                            "${doctor.feedbacks} feedbacks",
-                            fontSize = 10.sp,
-                            modifier = Modifier.padding(start = 24.dp)
-                        )
-                    }
-                    HorizontalDivider()
-                    Text(
-                        buildAnnotatedString {
-                            append("Available Tomorrow at ")
-                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                append(doctor.available)
-                            }
-                        }, fontSize = 12.sp
-                    )
-                    if (drawButtons) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            OutlinedButton(
-                                onClick = { },
-                                shape = RoundedCornerShape(16.dp),
-                                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.White)
-                            ) {
-                                Text("Timing", color = Color.Gray, fontSize = 10.sp)
-                            }
-                            OutlinedButton(
-                                onClick = { navController?.navigate("$id/appointment") },
-                                shape = RoundedCornerShape(16.dp),
-                                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
-                            ) {
-                                Text("Book Appointment", color = Color.White, fontSize = 10.sp)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun HorizontalDivider() {
-        Divider(color = Color.Gray)
     }
 
     @Composable
@@ -273,25 +100,17 @@ class MainActivity : ComponentActivity() {
             color = Color.White,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 16.dp, start = 8.dp)
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp, start = 8.dp)
         )
     }
 
-    //hold all UI data in ViewModel and update correspondingly
-//    @Preview
     @Composable
     private fun DoctorsRadioGroup() {
-        val selected = remember { mutableStateOf("Nearest") }
-
-        val options = listOf("Nearest", "Top Doctors", "Filter")
-        val onSelected = { text: String ->
-            selected.value = text
-        }
-        Row(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
-            options.forEach { text ->
-                val isSelected = text == selected.value
+        Row(modifier = Modifier.padding(bottom = 16.dp)) {
+            Tab.values().forEach { tab ->
+                val isSelected = tab.value == viewModel.selectedTab.value.value
                 OutlinedButton(
-                    onClick = { onSelected(text) },
+                    onClick = { viewModel.postSelectedTab(tab) },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .background(
@@ -304,7 +123,7 @@ class MainActivity : ComponentActivity() {
                     )
                 ) {
                     Text(
-                        text = text,
+                        text = tab.value,
                         color = if (isSelected)
                             Color.Blue else Color.Gray,
                     )
