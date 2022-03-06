@@ -9,10 +9,13 @@ class DoctorsViewModel : ViewModel() {
     private var dao: DoctorsDao = LocalDoctorsDAO()
 
     private val _selectedTab = mutableStateOf(Tab.NEAREST)
-    val selectedTab: State<Tab> = _selectedTab
+    val selectedTab: State<Tab> = _selectedTab // states?
 
     private val _screenState = mutableStateOf<Screen>(Screen.Doctor)
     val screenState: State<Screen> = _screenState
+
+    private val _selectedDoctor = mutableStateOf(Doctor())
+    val selectedDoctor: State<Doctor> = _selectedDoctor
 
     fun postSelectedTab(tab: Tab) {
         _selectedTab.value = tab
@@ -22,12 +25,21 @@ class DoctorsViewModel : ViewModel() {
         _screenState.value = screen
     }
 
+    fun postSelectedDoctor(doctor: Doctor) {
+        _selectedDoctor.value = doctor
+    }
+
     fun getDoctors(): List<Doctor> {
         return when (selectedTab.value) {
             Tab.NEAREST -> getNearestDoctors()
             Tab.TOP_DOCTORS -> getTopDoctors()
             Tab.FILTER -> listOf()
         }
+    }
+
+    fun getHeaderText() = when(screenState.value) {
+        Screen.Appointment -> selectedDoctor.value.name
+        else -> "Doctor"
     }
 
     private fun getNearestDoctors() = dao.getDoctors()

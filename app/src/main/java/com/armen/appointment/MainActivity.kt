@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     HorizontalDivider()
                     DoctorText()
-                    if (viewModel.screenState.value == Screen.Doctor) {
+                    if (viewModel.screenState.value == Screen.Doctor) { // screen state?
                         DoctorsRadioGroup()
                     }
                     HorizontalDivider()
@@ -71,6 +71,7 @@ class MainActivity : ComponentActivity() {
                             val doc = viewModel.getDoctors()[docId?.toInt()
                                 ?: throw RuntimeException("doc not found")]
                             viewModel.postScreenState(Screen.Appointment)
+                            viewModel.postSelectedDoctor(doc)
                             Appointment(
                                 doc,
                                 navHostController,
@@ -96,7 +97,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun DoctorText() {
         Text(
-            text = "Doctor",
+            text = viewModel.getHeaderText(),
             color = Color.White,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
