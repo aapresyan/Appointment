@@ -29,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.armen.appointment.composable.Appointment
 import com.armen.appointment.composable.DoctorCard
+import com.armen.appointment.composable.Filter
 import com.armen.appointment.composable.HorizontalDivider
 import com.armen.appointment.ui.theme.AppointmentTheme
 import com.armen.appointment.viewmodel.DoctorsViewModel
@@ -93,6 +94,11 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun DoctorsList(navController: NavHostController) {
         LazyColumn {
+            if (viewModel.selectedTab.value == Tab.FILTER) {
+                item {
+                    Filter(viewModel)
+                }
+            }
             val doctors = viewModel.getDoctors()
             itemsIndexed(doctors) { index, doctor ->
                 DoctorCard(index, doctor = doctor, navController)
@@ -115,7 +121,7 @@ class MainActivity : ComponentActivity() {
     private fun DoctorsRadioGroup() {
         Row(modifier = Modifier.padding(bottom = 16.dp)) {
             Tab.values().forEach { tab ->
-                val isSelected = tab.value == viewModel.selectedTab.value.value
+                val isSelected = tab == viewModel.selectedTab.value
                 OutlinedButton(
                     onClick = { viewModel.postSelectedTab(tab) },
                     shape = RoundedCornerShape(16.dp),

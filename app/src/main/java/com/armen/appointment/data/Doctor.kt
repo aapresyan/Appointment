@@ -8,5 +8,6 @@ class Doctor(
     val profession: String = "",
     val experience: Int = 0,
     val feedbacks: Int = 0,
-    val available: String = ""
+    val available: String = "",
+    val isMale: Boolean = true
 )

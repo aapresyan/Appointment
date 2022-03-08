@@ -23,7 +23,8 @@ private val NearestDoctors = listOf(
         profession = "General Physician",
         experience = 10,
         feedbacks = 12,
-        available = "Salt lake"
+        available = "Salt lake",
+        isMale = false
     ), Doctor(
         drawableId = R.drawable.doc2,
         name = "Dr. Marcus Brady",
@@ -32,7 +33,8 @@ private val NearestDoctors = listOf(
         profession = "Number #1 bullshit guy",
         experience = 10,
         feedbacks = 13,
-        available = "Glen Park"
+        available = "Glen Park",
+        isMale = false
     ), Doctor(
         drawableId = R.drawable.doc3,
         name = "Dr. Leroy Jenkins",
@@ -41,7 +43,8 @@ private val NearestDoctors = listOf(
         profession = "General Physician",
         experience = 5,
         feedbacks = 20,
-        available = "Nowhere"
+        available = "Nowhere",
+        isMale = true
     ), Doctor(
         drawableId = R.drawable.doc4,
         name = "Dr. Ivana Johnson",
@@ -50,7 +53,8 @@ private val NearestDoctors = listOf(
         profession = "General Physician",
         experience = 6,
         feedbacks = 15,
-        available = "Somewhere"
+        available = "Somewhere",
+        isMale = false
     ), Doctor(
         drawableId = R.drawable.doc5,
         name = "Dr. Michael Jackson",
@@ -59,7 +63,8 @@ private val NearestDoctors = listOf(
         profession = "General Physician",
         experience = 3,
         feedbacks = 9,
-        available = "LA"
+        available = "LA",
+        isMale = true
     ), Doctor(
         drawableId = R.drawable.doc6,
         name = "Dr. Anooshig",
@@ -68,7 +73,8 @@ private val NearestDoctors = listOf(
         profession = "General Physician",
         experience = 4,
         feedbacks = 8,
-        available = "Yerevan"
+        available = "Yerevan",
+        isMale = false
     ), Doctor(
         drawableId = R.drawable.doc7,
         name = "Dr. Neighbor's mother",
@@ -77,6 +83,7 @@ private val NearestDoctors = listOf(
         profession = "General Physician",
         experience = 6,
         feedbacks = 20,
-        available = "Chicago DL"
+        available = "Chicago DL",
+        isMale = false
     )
 )
