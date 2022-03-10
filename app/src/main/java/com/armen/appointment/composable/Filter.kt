@@ -1,3 +1,5 @@
+@file:Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+
 package com.armen.appointment.composable
 
 import androidx.compose.foundation.layout.*
@@ -11,9 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.armen.appointment.viewmodel.DoctorsViewModel
-import com.armen.appointment.viewmodel.DoctorsViewModel.Companion.EXPERIENCE_RANGE
-import com.armen.appointment.viewmodel.GenderFilter
+import com.armen.appointment.model.Gender
+import com.armen.appointment.model.viewmodel.DoctorsViewModel
+import com.armen.appointment.model.viewmodel.DoctorsViewModel.Companion.EXPERIENCE_RANGE
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -37,8 +39,8 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                     .height(32.dp)
             ) {
                 val isSelected =
-                    { gender: GenderFilter -> viewModel?.genderFilter?.value == gender }
-                val select = { gender: GenderFilter -> viewModel?.postGenderFilter(gender) }
+                    { gender: Gender -> viewModel?.filter?.value?.gender == gender }
+                val select = { gender: Gender -> viewModel?.postGenderFilter(gender) }
 
                 Text(
                     text = "Gender: ",
@@ -50,8 +52,8 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                         .padding(start = 48.dp)
                 ) {
                     RadioButton(
-                        selected = isSelected(GenderFilter.NONE),
-                        onClick = { select(GenderFilter.NONE) },
+                        selected = isSelected(Gender.NONE),
+                        onClick = { select(Gender.NONE) },
                         colors = RadioButtonDefaults.colors(unselectedColor = Color.Gray),
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
@@ -61,8 +63,8 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                     RadioButton(
-                        selected = isSelected(GenderFilter.MALE),
-                        onClick = { select(GenderFilter.MALE) },
+                        selected = isSelected(Gender.MALE),
+                        onClick = { select(Gender.MALE) },
                         colors = RadioButtonDefaults.colors(unselectedColor = Color.Gray),
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
@@ -72,8 +74,8 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                     RadioButton(
-                        selected = isSelected(GenderFilter.FEMALE),
-                        onClick = { select(GenderFilter.FEMALE) },
+                        selected = isSelected(Gender.FEMALE),
+                        onClick = { select(Gender.FEMALE) },
                         colors = RadioButtonDefaults.colors(unselectedColor = Color.Gray),
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
@@ -91,7 +93,7 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                     .height(32.dp)
             ) {
                 Text(
-                    text = "Experience: ${viewModel?.experienceRangeFilter?.value?.start?.toInt()} - ${viewModel?.experienceRangeFilter?.value?.endInclusive?.toInt()}",
+                    text = "Experience: ${viewModel?.filter?.value?.range?.start?.toInt()} - ${viewModel?.filter?.value?.range?.endInclusive?.toInt()}",
                     modifier = Modifier.align(Alignment.CenterStart),
                     fontSize = 12.sp
                 )
@@ -102,7 +104,7 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                 ) {
                     RangeSlider(
                         valueRange = 1f..20f,
-                        values = viewModel?.experienceRangeFilter?.value ?: EXPERIENCE_RANGE,
+                        values = viewModel?.filter?.value?.range ?: EXPERIENCE_RANGE,
                         onValueChange = {
                             viewModel?.postAgeRange(it)
                         })

@@ -1,4 +1,4 @@
-package com.armen.appointment.viewmodel
+package com.armen.appointment.model.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -6,11 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.armen.appointment.data.Doctor
 import com.armen.appointment.data.DoctorsDao
 import com.armen.appointment.data.LocalDoctorsDAO
+import com.armen.appointment.model.Filter
+import com.armen.appointment.model.Gender
 
 class DoctorsViewModel : ViewModel() {
 
     private var dao: DoctorsDao = LocalDoctorsDAO()
-    private var filter = Filter(true)
 
     private val _selectedTab = mutableStateOf(Tab.NEAREST)
     val selectedTab: State<Tab> = _selectedTab // states?
@@ -21,11 +22,8 @@ class DoctorsViewModel : ViewModel() {
     private val _selectedDoctor = mutableStateOf(Doctor())
     val selectedDoctor: State<Doctor> = _selectedDoctor
 
-    private val _genderFilter = mutableStateOf<GenderFilter>(GenderFilter.NONE)
-    val genderFilter: State<GenderFilter> = _genderFilter // filter
-
-    private val _experienceRangeFilter = mutableStateOf(EXPERIENCE_RANGE)
-    val experienceRangeFilter: State<ClosedFloatingPointRange<Float>> = _experienceRangeFilter
+    private val _filter = mutableStateOf(Filter(Gender.NONE, EXPERIENCE_RANGE))
+    val filter: State<Filter> = _filter
 
     fun postSelectedTab(tab: Tab) {
         _selectedTab.value = tab
@@ -39,12 +37,12 @@ class DoctorsViewModel : ViewModel() {
         _selectedDoctor.value = doctor
     }
 
-    fun postGenderFilter(gender: GenderFilter) {
-        _genderFilter.value = gender
+    fun postGenderFilter(gender: Gender) {
+        _filter.value = filter.value.copy(gender = gender)
     }
 
     fun postAgeRange(range: ClosedFloatingPointRange<Float>) {
-        _experienceRangeFilter.value = range
+        _filter.value = filter.value.copy(range = range)
     }
 
     fun getDoctors(): List<Doctor> {
@@ -60,11 +58,7 @@ class DoctorsViewModel : ViewModel() {
         else -> "Doctor"
     }
 
-    private fun getFilteredDoctors() = dao.getDoctors().filter { doc ->
-        genderFilter.value.filter(doc) &&
-                experienceRangeFilter.value.start.toInt() <= doc.experience &&
-                doc.experience <= experienceRangeFilter.value.endInclusive.toInt()
-    }
+    private fun getFilteredDoctors() = filter.value.filterDoctors(dao.getDoctors())
 
     private fun getNearestDoctors() = dao.getDoctors()
 
@@ -72,20 +66,6 @@ class DoctorsViewModel : ViewModel() {
 
     companion object {
         val EXPERIENCE_RANGE = 1f..20f
-    }
-}
-
-enum class GenderFilter {
-    NONE,
-    MALE,
-    FEMALE;
-
-    fun filter(doctor: Doctor): Boolean {
-        return if (this == NONE) {
-            true
-        } else if (this == MALE && doctor.isMale) {
-            true
-        } else this == FEMALE && !doctor.isMale
     }
 }
 
@@ -103,9 +83,4 @@ sealed class Screen(val key: String = "", val name: String) {
     object Appointment : Screen(key = "docId", name = "appointment")
 }
 
-class Filter(var isMale: Boolean?) {
-    fun applyFilter(doctors: List<Doctor>): List<Doctor> {
-        return doctors.filter { it.isMale == isMale }
-    }
-}
 

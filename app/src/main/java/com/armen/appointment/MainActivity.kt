@@ -32,9 +32,9 @@ import com.armen.appointment.composable.DoctorCard
 import com.armen.appointment.composable.Filter
 import com.armen.appointment.composable.HorizontalDivider
 import com.armen.appointment.ui.theme.AppointmentTheme
-import com.armen.appointment.viewmodel.DoctorsViewModel
-import com.armen.appointment.viewmodel.Screen
-import com.armen.appointment.viewmodel.Tab
+import com.armen.appointment.model.viewmodel.DoctorsViewModel
+import com.armen.appointment.model.viewmodel.Screen
+import com.armen.appointment.model.viewmodel.Tab
 
 class MainActivity : ComponentActivity() {
 

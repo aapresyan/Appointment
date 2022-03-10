@@ -26,7 +26,7 @@ import androidx.navigation.NavHostController
 import com.armen.appointment.R
 import com.armen.appointment.data.Doctor
 import com.armen.appointment.data.LocalDoctorsDAO
-import com.armen.appointment.viewmodel.Screen
+import com.armen.appointment.model.viewmodel.Screen
 
 @Composable
 fun HorizontalDivider() {
