@@ -1,9 +1,8 @@
-package com.armen.appointment
+package com.armen.appointment.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -27,18 +26,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.armen.appointment.composable.Appointment
-import com.armen.appointment.composable.DoctorCard
-import com.armen.appointment.composable.Filter
-import com.armen.appointment.composable.HorizontalDivider
+import com.armen.appointment.presentation.doctors.DoctorsViewModel
+import com.armen.appointment.presentation.doctors.Screen
+import com.armen.appointment.presentation.doctors.Tab
+import com.armen.appointment.presentation.doctors.composable.Appointment
+import com.armen.appointment.presentation.doctors.composable.DoctorCard
+import com.armen.appointment.presentation.doctors.composable.Filter
+import com.armen.appointment.presentation.doctors.composable.HorizontalDivider
 import com.armen.appointment.ui.theme.AppointmentTheme
-import com.armen.appointment.model.viewmodel.DoctorsViewModel
-import com.armen.appointment.model.viewmodel.Screen
-import com.armen.appointment.model.viewmodel.Tab
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: DoctorsViewModel by viewModels()
+    private val viewModel: DoctorsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,6 +1,6 @@
 @file:Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
 
-package com.armen.appointment.composable
+package com.armen.appointment.presentation.doctors.composable
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.armen.appointment.model.Gender
-import com.armen.appointment.model.viewmodel.DoctorsViewModel
-import com.armen.appointment.model.viewmodel.DoctorsViewModel.Companion.EXPERIENCE_RANGE
+import com.armen.appointment.presentation.doctors.Gender
+import com.armen.appointment.presentation.doctors.DoctorsViewModel
+import com.armen.appointment.presentation.doctors.DoctorsViewModel.Companion.EXPERIENCE_RANGE
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -99,7 +99,6 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                 )
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(0.8f)
                         .padding(start = 128.dp)
                 ) {
                     RangeSlider(

@@ -1,20 +1,15 @@
-package com.armen.appointment.model.viewmodel
+package com.armen.appointment.presentation.doctors
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.armen.appointment.data.Doctor
-import com.armen.appointment.data.DoctorsDao
-import com.armen.appointment.data.LocalDoctorsDAO
-import com.armen.appointment.model.Filter
-import com.armen.appointment.model.Gender
+import com.armen.appointment.domain.model.Doctor
+import com.armen.appointment.domain.usecase.DoctorsUseCase
 
-class DoctorsViewModel : ViewModel() {
-
-    private var dao: DoctorsDao = LocalDoctorsDAO()
+class DoctorsViewModel(private val doctorsUseCase: DoctorsUseCase) : ViewModel() {
 
     private val _selectedTab = mutableStateOf(Tab.NEAREST)
-    val selectedTab: State<Tab> = _selectedTab // states?
+    val selectedTab: State<Tab> = _selectedTab
 
     private val _screenState = mutableStateOf<Screen>(Screen.Doctor)
     val screenState: State<Screen> = _screenState
@@ -58,9 +53,9 @@ class DoctorsViewModel : ViewModel() {
         else -> "Doctor"
     }
 
-    private fun getFilteredDoctors() = filter.value.filterDoctors(dao.getDoctors())
+    private fun getFilteredDoctors() = filter.value.filterDoctors(doctorsUseCase.getDoctors())
 
-    private fun getNearestDoctors() = dao.getDoctors()
+    private fun getNearestDoctors() = doctorsUseCase.getDoctors()
 
     private fun getTopDoctors() = getNearestDoctors().sortedByDescending { it.rating }.take(3)
 

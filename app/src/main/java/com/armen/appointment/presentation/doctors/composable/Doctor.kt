@@ -1,4 +1,4 @@
-package com.armen.appointment.composable
+package com.armen.appointment.presentation.doctors.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.armen.appointment.R
-import com.armen.appointment.data.Doctor
-import com.armen.appointment.data.LocalDoctorsDAO
-import com.armen.appointment.model.viewmodel.Screen
+import com.armen.appointment.domain.model.Doctor
+import com.armen.appointment.data.dao.LocalDoctorsDAO
+import com.armen.appointment.presentation.doctors.Screen
 
 @Composable
 fun HorizontalDivider() {

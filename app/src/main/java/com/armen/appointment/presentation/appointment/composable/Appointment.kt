@@ -1,4 +1,4 @@
-package com.armen.appointment.composable
+package com.armen.appointment.presentation.doctors.composable
 
 import android.content.Context
 import android.widget.Toast
@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.armen.appointment.data.Doctor
-import com.armen.appointment.data.LocalDoctorsDAO
+import com.armen.appointment.domain.model.Doctor
+import com.armen.appointment.data.dao.LocalDoctorsDAO
 
 
 @Preview

@@ -1,6 +1,6 @@
-package com.armen.appointment.model
+package com.armen.appointment.presentation.doctors
 
-import com.armen.appointment.data.Doctor
+import com.armen.appointment.domain.model.Doctor
 
 enum class Gender {
     NONE,
