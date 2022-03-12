@@ -18,32 +18,17 @@ object DIModule {
             DoctorsDatabase.createDb(androidApplication())
         }
 
-//        single<DoctorsDao> {
-//            LocalDoctorsDAO()
-//        }
-
         single<DoctorsRepository> {
             DoctorsRepositoryImpl(get<DoctorsDatabase>().doctorsDao)
         }
 
         single {
-            GetDoctors(get())
-        }
-
-        single {
-            GetDoctor(get())
-        }
-
-        single {
-            UpdateDoctor(get())
-        }
-
-        single {
-            UpdateDoctors(get())
-        }
-
-        single {
-            DoctorsUseCase(get(), get(), get(), get())
+            DoctorsUseCase(
+                GetDoctors(get()),
+                GetDoctor((get())),
+                UpdateDoctor(get()),
+                UpdateDoctors(get())
+            )
         }
 
         viewModel {
