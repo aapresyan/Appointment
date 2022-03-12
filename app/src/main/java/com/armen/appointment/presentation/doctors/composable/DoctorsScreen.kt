@@ -44,7 +44,7 @@ private fun DoctorsList(navController: NavHostController, viewModel: DoctorsView
 
 @Composable
 private fun DoctorsRadioGroup(viewModel: DoctorsViewModel) {
-    Row(modifier = Modifier.padding(bottom = 16.dp)) {
+    Row(modifier = Modifier.padding(bottom = 8.dp)) {
         Tab.values().forEach { tab ->
             val isSelected = tab == viewModel.selectedTab.value
             OutlinedButton(

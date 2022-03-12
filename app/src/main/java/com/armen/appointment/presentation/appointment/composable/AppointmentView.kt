@@ -20,16 +20,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.armen.appointment.data.dao.LocalDoctors
 import com.armen.appointment.domain.model.Doctor
-import com.armen.appointment.data.dao.LocalDoctorsDAO
 import com.armen.appointment.presentation.doctors.composable.DoctorCard
 
 
 @Preview
 @Composable
 private fun AppointmentPreview() {
-    val docDao = LocalDoctorsDAO()
-    Appointment(docDao.getDoctors()[0])
+    Appointment(LocalDoctors.AllDoctors[0])
 }
 
 

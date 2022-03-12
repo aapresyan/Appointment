@@ -3,14 +3,10 @@ package com.armen.appointment.data.dao
 import com.armen.appointment.R
 import com.armen.appointment.domain.model.Doctor
 
-class LocalDoctorsDAO : DoctorsDao {
-
-    override fun getDoctors() = getNearestDoctors()
-
-    private fun getNearestDoctors() = NearestDoctors
+class LocalDoctors {
 
     companion object {
-        private val NearestDoctors = listOf(
+        val AllDoctors = listOf(
             Doctor(
                 drawableId = R.drawable.doc1,
                 name = "Dr. James Smith",
@@ -27,7 +23,7 @@ class LocalDoctorsDAO : DoctorsDao {
                 rating = 65,
                 role = "MBBS, MB - General Medicine",
                 profession = "Number #1 bullshit guy",
-                experience = 10,
+                experience = 9,
                 feedbacks = 13,
                 available = "Glen Park",
                 isMale = false
@@ -83,6 +79,5 @@ class LocalDoctorsDAO : DoctorsDao {
                 isMale = false
             )
         )
-
     }
 }

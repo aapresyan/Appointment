@@ -1,7 +1,9 @@
 package com.armen.appointment.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -23,6 +25,7 @@ fun HeaderText(text: String) {
         modifier = Modifier.padding(top = 16.dp, bottom = 16.dp, start = 8.dp)
     )
     HorizontalDivider()
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable

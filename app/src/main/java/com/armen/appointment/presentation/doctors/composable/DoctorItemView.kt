@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,16 +27,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.armen.appointment.R
+import com.armen.appointment.data.dao.LocalDoctors
 import com.armen.appointment.domain.model.Doctor
-import com.armen.appointment.data.dao.LocalDoctorsDAO
 import com.armen.appointment.presentation.HorizontalDivider
 import com.armen.appointment.presentation.doctors.Screen
 
 @Preview
 @Composable
 private fun DoctorCardPreview() {
-    val docDao = LocalDoctorsDAO()
-    DoctorCard(doctor = docDao.getDoctors()[0])
+    DoctorCard(doctor = LocalDoctors.AllDoctors[0])
 }
 
 @Composable

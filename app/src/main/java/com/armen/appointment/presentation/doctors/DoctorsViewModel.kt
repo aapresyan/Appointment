@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.armen.appointment.data.dao.LocalDoctors
 import com.armen.appointment.domain.model.Doctor
 import com.armen.appointment.domain.usecase.DoctorsUseCase
 import kotlinx.coroutines.Job
@@ -44,19 +45,22 @@ class DoctorsViewModel(private val doctorsUseCase: DoctorsUseCase) : ViewModel()
     private fun getDoctors() {
         getDoctorsJob?.cancel()
         getDoctorsJob = viewModelScope.launch {
-            _doctorsList.value = when (selectedTab.value) {
-                Tab.NEAREST -> getNearestDoctors()
-                Tab.TOP_DOCTORS -> getTopDoctors()
-                Tab.FILTER -> getFilteredDoctors()
+            doctorsUseCase.getDoctors().collect {
+                if (it.isEmpty()) {
+                    doctorsUseCase.updateDoctors(LocalDoctors.AllDoctors)
+                }
+                _doctorsList.value = when (selectedTab.value) {
+                    Tab.NEAREST -> it
+                    Tab.TOP_DOCTORS -> getTopDoctors(it)
+                    Tab.FILTER -> getFilteredDoctors(it)
+                }
             }
         }
     }
 
-    private fun getFilteredDoctors() = filter.value.filterDoctors(doctorsUseCase.getDoctors())
+    private fun getFilteredDoctors(doctors: List<Doctor>) = filter.value.filterDoctors(doctors)
 
-    private fun getNearestDoctors() = doctorsUseCase.getDoctors()
-
-    private fun getTopDoctors() = getNearestDoctors().sortedByDescending { it.rating }.take(3)
+    private fun getTopDoctors(doctors: List<Doctor>) = doctors.sortedByDescending { it.rating }.take(3)
 
     companion object {
         val EXPERIENCE_RANGE = 1f..20f

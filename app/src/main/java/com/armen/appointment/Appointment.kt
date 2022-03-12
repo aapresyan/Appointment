@@ -1,7 +1,7 @@
 package com.armen.appointment
 
 import android.app.Application
-import com.armen.appointment.di.DIModules.appModule
+import com.armen.appointment.di.DIModule.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
