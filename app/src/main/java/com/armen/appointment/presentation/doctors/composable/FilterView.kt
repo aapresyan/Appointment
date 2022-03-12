@@ -13,9 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.armen.appointment.presentation.doctors.Gender
+import com.armen.appointment.presentation.HorizontalDivider
 import com.armen.appointment.presentation.doctors.DoctorsViewModel
 import com.armen.appointment.presentation.doctors.DoctorsViewModel.Companion.EXPERIENCE_RANGE
+import com.armen.appointment.presentation.doctors.Gender
 
 
 @OptIn(ExperimentalMaterialApi::class)

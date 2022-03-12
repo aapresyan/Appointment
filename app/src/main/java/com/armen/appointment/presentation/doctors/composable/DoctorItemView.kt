@@ -26,12 +26,8 @@ import androidx.navigation.NavHostController
 import com.armen.appointment.R
 import com.armen.appointment.domain.model.Doctor
 import com.armen.appointment.data.dao.LocalDoctorsDAO
+import com.armen.appointment.presentation.HorizontalDivider
 import com.armen.appointment.presentation.doctors.Screen
-
-@Composable
-fun HorizontalDivider() {
-    Divider(color = Color.Gray)
-}
 
 @Preview
 @Composable
