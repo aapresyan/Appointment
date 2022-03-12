@@ -34,7 +34,7 @@ fun DoctorsScreen(viewModel: DoctorsViewModel, navHostController: NavHostControl
 
 @Composable
 private fun DoctorsList(navController: NavHostController, viewModel: DoctorsViewModel) {
-    val doctors = viewModel.getDoctors()
+    val doctors = viewModel.doctorsList.value
     LazyColumn {
         itemsIndexed(doctors) { index, doctor ->
             DoctorCard(index, doctor = doctor, navController)

@@ -3,54 +3,53 @@ package com.armen.appointment.presentation.doctors
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.armen.appointment.domain.model.Doctor
 import com.armen.appointment.domain.usecase.DoctorsUseCase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class DoctorsViewModel(private val doctorsUseCase: DoctorsUseCase) : ViewModel() {
 
     private val _selectedTab = mutableStateOf(Tab.NEAREST)
     val selectedTab: State<Tab> = _selectedTab
 
-    private val _screenState = mutableStateOf<Screen>(Screen.Doctor)
-    val screenState: State<Screen> = _screenState
-
-    private val _selectedDoctor = mutableStateOf(Doctor())
-    val selectedDoctor: State<Doctor> = _selectedDoctor
-
     private val _filter = mutableStateOf(Filter(Gender.NONE, EXPERIENCE_RANGE))
     val filter: State<Filter> = _filter
 
+    private val _doctorsList = mutableStateOf(listOf<Doctor>())
+    val doctorsList: State<List<Doctor>> = _doctorsList
+
+    private var getDoctorsJob: Job? = null
+
+    init {
+        getDoctors()
+    }
+
     fun postSelectedTab(tab: Tab) {
         _selectedTab.value = tab
-    }
-
-    fun postScreenState(screen: Screen) {
-        _screenState.value = screen
-    }
-
-    fun postSelectedDoctor(doctor: Doctor) {
-        _selectedDoctor.value = doctor
+        getDoctors()
     }
 
     fun postGenderFilter(gender: Gender) {
         _filter.value = filter.value.copy(gender = gender)
+        getDoctors()
     }
 
     fun postAgeRange(range: ClosedFloatingPointRange<Float>) {
         _filter.value = filter.value.copy(range = range)
+        getDoctors()
     }
 
-    fun getDoctors(): List<Doctor> {
-        return when (selectedTab.value) {
-            Tab.NEAREST -> getNearestDoctors()
-            Tab.TOP_DOCTORS -> getTopDoctors()
-            Tab.FILTER -> getFilteredDoctors()
+    private fun getDoctors() {
+        getDoctorsJob?.cancel()
+        getDoctorsJob = viewModelScope.launch {
+            _doctorsList.value = when (selectedTab.value) {
+                Tab.NEAREST -> getNearestDoctors()
+                Tab.TOP_DOCTORS -> getTopDoctors()
+                Tab.FILTER -> getFilteredDoctors()
+            }
         }
-    }
-
-    fun getHeaderText() = when (screenState.value) {
-        Screen.Appointment -> selectedDoctor.value.name
-        else -> "Doctor"
     }
 
     private fun getFilteredDoctors() = filter.value.filterDoctors(doctorsUseCase.getDoctors())

@@ -30,7 +30,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.mainThemeModifier()
                 ) {
                     composable(Screen.Doctor.getRoute()) {
-                        viewModel.postScreenState(Screen.Doctor)
                         DoctorsScreen(
                             viewModel = viewModel,
                             navHostController = navHostController
@@ -38,10 +37,8 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Screen.Appointment.getRoute()) { backStackEntry ->
                         val docId = backStackEntry.arguments?.getString(Screen.Appointment.key)
-                        val doc = viewModel.getDoctors()[docId?.toInt()
+                        val doc = viewModel.doctorsList.value[docId?.toInt()
                             ?: throw RuntimeException("doc not found")]
-                        viewModel.postScreenState(Screen.Appointment)
-                        viewModel.postSelectedDoctor(doc)
                         AppointmentScreen(
                             doc = doc,
                             navHostController = navHostController,
