@@ -4,6 +4,7 @@ import com.armen.appointment.data.dao.DoctorsDatabase
 import com.armen.appointment.data.repository.DoctorsRepositoryImpl
 import com.armen.appointment.domain.repository.DoctorsRepository
 import com.armen.appointment.domain.usecase.*
+import com.armen.appointment.presentation.appointment.AppointmentViewModel
 import com.armen.appointment.presentation.doctors.DoctorsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -33,6 +34,10 @@ object DIModule {
 
         viewModel {
             DoctorsViewModel(get())
+        }
+
+        viewModel {
+            AppointmentViewModel(get())
         }
     }
 

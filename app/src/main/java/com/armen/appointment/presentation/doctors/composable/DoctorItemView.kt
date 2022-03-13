@@ -32,15 +32,8 @@ import com.armen.appointment.domain.model.Doctor
 import com.armen.appointment.presentation.HorizontalDivider
 import com.armen.appointment.presentation.doctors.Screen
 
-@Preview
-@Composable
-private fun DoctorCardPreview() {
-    DoctorCard(doctor = LocalDoctors.AllDoctors[0])
-}
-
 @Composable
 fun DoctorCard(
-    id: Int? = 0,
     doctor: Doctor,
     navController: NavHostController? = null,
     drawButtons: Boolean = true
@@ -58,16 +51,18 @@ fun DoctorCard(
                 .fillMaxWidth()
                 .padding(4.dp)
         ) {
-            Image(
-                painter = painterResource(id = doctor.drawableId),
-                contentDescription = "avatar",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp)
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, Color.Gray, CircleShape)
-            )
+            if (doctor.drawableId != 0) {
+                Image(
+                    painter = painterResource(id = doctor.drawableId),
+                    contentDescription = "avatar",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 16.dp)
+                        .size(64.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, Color.Gray, CircleShape)
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -144,7 +139,7 @@ fun DoctorCard(
                             Text("Timing", color = Color.Gray, fontSize = 10.sp)
                         }
                         OutlinedButton(
-                            onClick = { navController?.navigate(Screen.Appointment.createRoute(id.toString())) },
+                            onClick = { navController?.navigate(Screen.Appointment.createRoute(doctor.id.toString())) },
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
                         ) {

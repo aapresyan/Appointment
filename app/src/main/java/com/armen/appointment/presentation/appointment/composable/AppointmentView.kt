@@ -16,28 +16,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.armen.appointment.data.dao.LocalDoctors
-import com.armen.appointment.domain.model.Doctor
+import com.armen.appointment.presentation.appointment.AppointmentViewModel
 import com.armen.appointment.presentation.doctors.composable.DoctorCard
-
-
-@Preview
-@Composable
-private fun AppointmentPreview() {
-    Appointment(LocalDoctors.AllDoctors[0])
-}
-
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun Appointment(
-    doctor: Doctor,
+    docId: Int,
     navController: NavHostController? = null,
     context: Context? = null
 ) {
+    val viewModel: AppointmentViewModel = getViewModel()
+    val doctor = viewModel.selectedDoctor.value
+    viewModel.setSelectedId(docId)
+
     Column {
         val textState = remember { mutableStateOf(TextFieldValue()) }
         DoctorCard(doctor = doctor, drawButtons = false)
@@ -58,8 +53,7 @@ fun Appointment(
                         unfocusedIndicatorColor = Color.Gray,
                         unfocusedLabelColor = Color.Gray
                     ),
-
-                    )
+                )
                 Box(modifier = Modifier.fillMaxWidth()) {
                     OutlinedButton(
                         modifier = Modifier
