@@ -13,7 +13,7 @@ interface DoctorsDao {
     @Query("select * from doctor where id = :id")
     suspend fun getDoctorById(id: Int): Doctor?
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateDoctor(doctor: Doctor)
 
     @Insert

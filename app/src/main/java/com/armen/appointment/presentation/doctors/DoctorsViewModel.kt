@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.armen.appointment.data.dao.LocalDoctors
 import com.armen.appointment.domain.model.Doctor
 import com.armen.appointment.domain.usecase.DoctorsUseCase
+import com.armen.appointment.presentation.Tab
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -66,19 +67,3 @@ class DoctorsViewModel(private val doctorsUseCase: DoctorsUseCase) : ViewModel()
         val EXPERIENCE_RANGE = 1f..20f
     }
 }
-
-enum class Tab(val value: String) {
-    NEAREST("Nearest"), TOP_DOCTORS("Top Doctors"), FILTER("Filter")
-}
-
-sealed class Screen(val key: String = "", val name: String) {
-    fun getRoute() = if (key == "") name else "{$key}/$name"
-
-    fun createRoute(key: String) = "$key/$name"
-
-    object Doctor : Screen(name = "doctors")
-
-    object Appointment : Screen(key = "docId", name = "appointment")
-}
-
-

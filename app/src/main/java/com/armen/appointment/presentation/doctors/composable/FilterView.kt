@@ -3,8 +3,6 @@
 package com.armen.appointment.presentation.doctors.composable
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.armen.appointment.presentation.DefaultCard
 import com.armen.appointment.presentation.HorizontalDivider
 import com.armen.appointment.presentation.doctors.DoctorsViewModel
 import com.armen.appointment.presentation.doctors.DoctorsViewModel.Companion.EXPERIENCE_RANGE
@@ -23,12 +22,7 @@ import com.armen.appointment.presentation.doctors.Gender
 @Preview
 @Composable
 fun Filter(viewModel: DoctorsViewModel? = null) {
-    Card(
-        shape = RoundedCornerShape(CornerSize(12.dp)), elevation = 8.dp, modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        backgroundColor = Color.White
-    ) {
+    DefaultCard {
         Column(
             Modifier
                 .fillMaxWidth()

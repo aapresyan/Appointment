@@ -1,13 +1,12 @@
 package com.armen.appointment.presentation.doctors.composable
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,15 +21,15 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.armen.appointment.R
-import com.armen.appointment.data.dao.LocalDoctors
 import com.armen.appointment.domain.model.Doctor
+import com.armen.appointment.presentation.DefaultCard
 import com.armen.appointment.presentation.HorizontalDivider
-import com.armen.appointment.presentation.doctors.Screen
+import com.armen.appointment.presentation.Screen
+import com.armen.appointment.ui.theme.PrimaryBlue
 
 @Composable
 fun DoctorCard(
@@ -38,14 +37,7 @@ fun DoctorCard(
     navController: NavHostController? = null,
     drawButtons: Boolean = true
 ) {
-    Card(
-        elevation = 8.dp,
-        shape = RoundedCornerShape(CornerSize(12.dp)),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        backgroundColor = Color.White
-    ) {
+    DefaultCard {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -134,14 +126,21 @@ fun DoctorCard(
                         OutlinedButton(
                             onClick = { },
                             shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.White)
+                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.White),
+                            border = BorderStroke(1.dp, Color.Gray)
                         ) {
                             Text("Timing", color = Color.Gray, fontSize = 10.sp)
                         }
                         OutlinedButton(
-                            onClick = { navController?.navigate(Screen.Appointment.createRoute(doctor.id.toString())) },
+                            onClick = {
+                                navController?.navigate(
+                                    Screen.Appointment.createRoute(
+                                        doctor.id.toString()
+                                    )
+                                )
+                            },
                             shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Blue)
+                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = PrimaryBlue)
                         ) {
                             Text("Book Appointment", color = Color.White, fontSize = 10.sp)
                         }

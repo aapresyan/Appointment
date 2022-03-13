@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedButton
@@ -18,12 +17,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.armen.appointment.presentation.HeaderText
+import com.armen.appointment.presentation.Tab
 import com.armen.appointment.presentation.doctors.DoctorsViewModel
-import com.armen.appointment.presentation.doctors.Tab
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun DoctorsScreen(viewModel: DoctorsViewModel = getViewModel(), navHostController: NavHostController) {
+fun DoctorsScreen(
+    viewModel: DoctorsViewModel = getViewModel(),
+    navHostController: NavHostController
+) {
     Column {
         HeaderText(text = "Doctors")
         DoctorsRadioGroup(viewModel = viewModel)
