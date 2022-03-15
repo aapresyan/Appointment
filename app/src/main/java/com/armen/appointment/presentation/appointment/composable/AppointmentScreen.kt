@@ -20,6 +20,7 @@ fun AppointmentScreen(docId: Int, navHostController: NavHostController, context:
         HeaderText(text = "Appointment")
         DoctorCard(doctor = doctor, drawButtons = false)
         Appointment(
+            viewModel,
             navHostController,
             context
         )

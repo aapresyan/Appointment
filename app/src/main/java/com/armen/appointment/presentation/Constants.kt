@@ -1,8 +1,9 @@
 package com.armen.appointment.presentation
 
-class Utils {
+class Constants {
     companion object {
         val TimeSlots = listOf("09:00", "09:30", "10:00", "10:30", "11:00")
+        val DEFAULT_EXPERIENCE_RANGE = 1f..20f
     }
 }
 

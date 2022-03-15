@@ -8,6 +8,7 @@ import com.armen.appointment.data.dao.LocalDoctors
 import com.armen.appointment.domain.model.Doctor
 import com.armen.appointment.domain.usecase.DoctorsUseCase
 import com.armen.appointment.presentation.Tab
+import com.armen.appointment.presentation.Constants.Companion.DEFAULT_EXPERIENCE_RANGE
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -16,7 +17,7 @@ class DoctorsViewModel(private val doctorsUseCase: DoctorsUseCase) : ViewModel()
     private val _selectedTab = mutableStateOf(Tab.NEAREST)
     val selectedTab: State<Tab> = _selectedTab
 
-    private val _filter = mutableStateOf(Filter(Gender.NONE, EXPERIENCE_RANGE))
+    private val _filter = mutableStateOf(Filter(Gender.NONE, DEFAULT_EXPERIENCE_RANGE))
     val filter: State<Filter> = _filter
 
     private val _doctorsList = mutableStateOf(listOf<Doctor>())
@@ -61,9 +62,6 @@ class DoctorsViewModel(private val doctorsUseCase: DoctorsUseCase) : ViewModel()
 
     private fun getFilteredDoctors(doctors: List<Doctor>) = filter.value.filterDoctors(doctors)
 
-    private fun getTopDoctors(doctors: List<Doctor>) = doctors.sortedByDescending { it.rating }.take(3)
-
-    companion object {
-        val EXPERIENCE_RANGE = 1f..20f
-    }
+    private fun getTopDoctors(doctors: List<Doctor>) =
+        doctors.sortedByDescending { it.rating }.take(3)
 }

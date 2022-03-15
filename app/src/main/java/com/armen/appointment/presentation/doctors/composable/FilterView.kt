@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.armen.appointment.presentation.DefaultCard
 import com.armen.appointment.presentation.HorizontalDivider
+import com.armen.appointment.presentation.Constants.Companion.DEFAULT_EXPERIENCE_RANGE
 import com.armen.appointment.presentation.doctors.DoctorsViewModel
-import com.armen.appointment.presentation.doctors.DoctorsViewModel.Companion.EXPERIENCE_RANGE
 import com.armen.appointment.presentation.doctors.Gender
 
 
@@ -98,7 +98,7 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                 ) {
                     RangeSlider(
                         valueRange = 1f..20f,
-                        values = viewModel?.filter?.value?.range ?: EXPERIENCE_RANGE,
+                        values = viewModel?.filter?.value?.range ?: DEFAULT_EXPERIENCE_RANGE,
                         onValueChange = {
                             viewModel?.postAgeRange(it)
                         })

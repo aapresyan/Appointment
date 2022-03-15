@@ -32,7 +32,9 @@ class AppointmentViewModel(
     fun isTimeSlotAvailable(time: String) =
         !selectedDoctor.value.bookedSlots.contains(time)
 
-    fun bookClicked() {
+    fun isAnyTimeSlotSelected() = selectedTimeSlot.value.isNotEmpty()
+
+    fun bookClicked() { // check if any slot selected
         val doc = selectedDoctor.value
         viewModelScope.launch {
             doctorsUseCase.updateDoctor(doc.copy(bookedSlots = doc.bookedSlots.toMutableList().apply {

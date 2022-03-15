@@ -24,17 +24,17 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun Appointment(
+    viewModel: AppointmentViewModel,
     navController: NavHostController? = null,
     context: Context? = null
 ) {
 
     val textState = remember { mutableStateOf(TextFieldValue()) }
-    val viewModel: AppointmentViewModel = getViewModel()
 
     DefaultCard {
         Column(Modifier.fillMaxWidth()) {
             Text(modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp), text = "Time slots:", color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            TimeSlotPickerView()
+            TimeSlotPickerView(viewModel)
             HorizontalDivider()
             Spacer(modifier = Modifier.height(8.dp))
             TextField(
@@ -50,6 +50,7 @@ fun Appointment(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Box(modifier = Modifier.fillMaxWidth()) {
+                val isEnabled = viewModel.isAnyTimeSlotSelected()
                 OutlinedButton(
                     modifier = Modifier
                         .padding(end = 16.dp)
@@ -64,7 +65,8 @@ fun Appointment(
                         viewModel.bookClicked()
                     },
                     shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(backgroundColor = PrimaryBlue)
+                    colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if (isEnabled) PrimaryBlue else Color.Gray),
+                    enabled = isEnabled
                 ) {
                     Text("Book Appointment", color = Color.White, fontSize = 10.sp)
                 }
