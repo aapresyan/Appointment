@@ -16,11 +16,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.armen.appointment.presentation.Constants.Companion.TimesMap
 import com.armen.appointment.presentation.DefaultCard
 import com.armen.appointment.presentation.HorizontalDivider
 import com.armen.appointment.presentation.appointment.AppointmentViewModel
 import com.armen.appointment.ui.theme.PrimaryBlue
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun Appointment(
@@ -33,8 +33,25 @@ fun Appointment(
 
     DefaultCard {
         Column(Modifier.fillMaxWidth()) {
-            Text(modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp), text = "Time slots:", color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            TimeSlotPickerView(viewModel)
+            Text(
+                modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp),
+                text = "Time slots:",
+                color = Color.Black,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            TimesMap.keys.forEach {
+                Text(
+                    modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp),
+                    text = it,
+                    color = Color.Black,
+                    fontSize = 12.sp
+                )
+                TimesMap[it]?.let { list ->
+                    TimeSlotPickerView(slots = list, viewModel = viewModel)
+                }
+            }
+
             HorizontalDivider()
             Spacer(modifier = Modifier.height(8.dp))
             TextField(

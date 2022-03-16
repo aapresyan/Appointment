@@ -14,17 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.armen.appointment.presentation.Constants.Companion.TimeSlots
 import com.armen.appointment.presentation.appointment.AppointmentViewModel
 import com.armen.appointment.ui.theme.PrimaryBlue
 
 @Composable
-fun TimeSlotPickerView(viewModel: AppointmentViewModel) {
+fun TimeSlotPickerView(slots: List<String>, viewModel: AppointmentViewModel) {
 
     val selectedTime = viewModel.selectedTimeSlot
 
     LazyRow {
-        items(TimeSlots) { time ->
+        items(slots) { time ->
             val isSelected = selectedTime.value == time
             val isAvailable = viewModel.isTimeSlotAvailable(time)
 

@@ -2,7 +2,10 @@ package com.armen.appointment.presentation
 
 class Constants {
     companion object {
-        val TimeSlots = listOf("09:00", "09:30", "10:00", "10:30", "11:00")
+        private val MorningTimes = listOf("09:00", "09:30", "10:00", "10:30", "11:00")
+        private val AfternoonTimes = listOf("12:00", "12:30", "13:00", "13:30", "14:00")
+        private val EveningTimes = listOf("16:00", "16:30", "17:00", "17:30", "18:00")
+        val TimesMap = mapOf("Morning" to MorningTimes, "Afternoon" to AfternoonTimes, "Evening" to EveningTimes)
         val DEFAULT_EXPERIENCE_RANGE = 1f..20f
     }
 }

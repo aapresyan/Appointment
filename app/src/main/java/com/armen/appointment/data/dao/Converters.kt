@@ -1,18 +1,13 @@
 package com.armen.appointment.data.dao
 
 import androidx.room.TypeConverter
-import com.armen.appointment.domain.model.TimeSlots
 import com.google.gson.Gson
 
 class Converters {
 
     @TypeConverter
-    fun timeSlotsToJsonString(value: TimeSlots?): String =
-        Gson().toJson(listOf(value?.morningTimes, value?.afternoonTimes, value?.eveningTimes))
+    fun listToJsonString(value: List<String>?): String = Gson().toJson(value)
 
     @TypeConverter
-    fun jsonStringToTimeSlots(value: String): TimeSlots {
-        Gson().fromJson(value, Array<String>::class.java).toList()
-    }
-
+    fun jsonStringToList(value: String) = Gson().fromJson(value, Array<String>::class.java).toList()
 }
