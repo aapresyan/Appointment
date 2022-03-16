@@ -14,7 +14,7 @@ data class Doctor(
     val feedbacks: Int = 0,
     val available: String = "",
     val isMale: Boolean = true,
-    val bookedSlots: List<String> = listOf(),
+    val bookedTimes: TimeSlots = TimeSlots(listOf(), listOf(), listOf()),
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null
 )
