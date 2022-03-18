@@ -35,7 +35,8 @@ import com.armen.appointment.ui.theme.PrimaryBlue
 fun DoctorCard(
     doctor: Doctor,
     navController: NavHostController? = null,
-    drawButtons: Boolean = true
+    drawButtons: Boolean = true,
+    showTimings: (() -> Unit)? = null
 ) {
     DefaultCard {
         Row(
@@ -95,8 +96,7 @@ fun DoctorCard(
                             textAlign = TextAlign.Right,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
-                                .size(width = 32.dp, height = 16.dp)
-                                .padding(bottom = 2.dp),
+                                .size(width = 32.dp, height = 16.dp),
                             maxLines = 1
                         )
                     }
@@ -124,7 +124,9 @@ fun DoctorCard(
                 if (drawButtons) {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         OutlinedButton(
-                            onClick = { },
+                            onClick = {
+                                showTimings?.invoke()
+                            },
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.White),
                             border = BorderStroke(1.dp, Color.Gray)

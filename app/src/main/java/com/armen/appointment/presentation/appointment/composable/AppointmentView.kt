@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
@@ -35,43 +34,7 @@ fun Appointment(
 
     DefaultCard {
         Column(Modifier.fillMaxWidth()) {
-            Text(
-                modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp),
-                text = "Time slots:",
-                color = Color.Black,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-            TimesMap.keys.forEach {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Image(
-                        painter = painterResource(
-                            id = context.resources.getIdentifier(
-                                it.toLowerCase(Locale.current),
-                                "drawable",
-                                context.packageName
-                            )
-                        ), contentDescription = "time icon",
-                        modifier = Modifier
-                            .padding(start = 16.dp, top = 8.dp)
-                            .size(32.dp)
-                            .align(Alignment.CenterVertically),
-                        contentScale = ContentScale.Crop
-                    )
-                    Text(
-                        modifier = Modifier
-                            .padding(top = 12.dp, start = 12.dp, bottom = 2.dp)
-                            .align(Alignment.CenterVertically),
-                        text = it,
-                        color = Color.Gray,
-                        fontSize = 14.sp
-                    )
-                }
-                TimesMap[it]?.let { list ->
-                    TimeSlotPickerView(slots = list, viewModel = viewModel)
-                }
-                HorizontalDivider()
-            }
+            TimingView(context = context, viewModel = viewModel, clickable = true)
             Spacer(modifier = Modifier.height(8.dp))
             TextField(
                 value = textState.value,
@@ -104,3 +67,38 @@ fun Appointment(
         }
     }
 }
+
+@Composable
+fun TimingView(context: Context, viewModel: AppointmentViewModel, unavailableSlots: List<String>? = null, clickable: Boolean) {
+    TimesMap.keys.forEach {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Image(
+                painter = painterResource(
+                    id = context.resources.getIdentifier(
+                        it.toLowerCase(Locale.current),
+                        "drawable",
+                        context.packageName
+                    )
+                ), contentDescription = "time icon",
+                modifier = Modifier
+                    .padding(start = 16.dp, top = 8.dp)
+                    .size(32.dp)
+                    .align(Alignment.CenterVertically),
+                contentScale = ContentScale.Crop
+            )
+            Text(
+                modifier = Modifier
+                    .padding(top = 12.dp, start = 12.dp, bottom = 2.dp)
+                    .align(Alignment.CenterVertically),
+                text = it,
+                color = Color.Gray,
+                fontSize = 14.sp
+            )
+        }
+        TimesMap[it]?.let { list ->
+            TimeSlotPickerView(slots = list, clickable = clickable, unavailableSlots, viewModel)
+        }
+    }
+    HorizontalDivider()
+}
+

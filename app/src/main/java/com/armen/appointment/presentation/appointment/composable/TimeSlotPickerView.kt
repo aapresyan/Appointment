@@ -18,24 +18,31 @@ import com.armen.appointment.presentation.appointment.AppointmentViewModel
 import com.armen.appointment.ui.theme.PrimaryBlue
 
 @Composable
-fun TimeSlotPickerView(slots: List<String>, viewModel: AppointmentViewModel) {
-
-    val selectedTime = viewModel.selectedTimeSlot
+fun TimeSlotPickerView(
+    slots: List<String>,
+    clickable: Boolean = true,
+    unavailableSlots: List<String>? = null,
+    viewModel: AppointmentViewModel? = null
+) {
 
     LazyRow {
         items(slots) { time ->
-            val isSelected = selectedTime.value == time
-            val isAvailable = viewModel.isTimeSlotAvailable(time)
+            val isSelected = viewModel?.selectedTimeSlot?.value == time
+            val isAvailable = unavailableSlots?.contains(time) ?: viewModel?.isTimeSlotAvailable(time) == true
 
             OutlinedButton(
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .background(Color.Transparent),
-                onClick = { if (isAvailable) viewModel.postSelectedTimeSlot(time) },
+                onClick = { if (isAvailable) viewModel?.postSelectedTimeSlot(time) },
                 colors = ButtonDefaults.outlinedButtonColors(
                     backgroundColor = Color.Transparent
                 ),
-                border = BorderStroke(1.dp, color = if (isSelected) PrimaryBlue else Color.Transparent)
+                enabled = clickable,
+                border = BorderStroke(
+                    1.dp,
+                    color = if (isSelected) PrimaryBlue else Color.Transparent
+                )
             ) {
                 Text(
                     text = time,

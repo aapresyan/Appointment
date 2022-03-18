@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable(Screen.Doctor.getRoute()) {
                         DoctorsScreen(
-                            navHostController = navHostController
+                            navHostController = navHostController, context = applicationContext
                         )
                     }
                     composable(Screen.Appointment.getRoute()) { backStackEntry ->
