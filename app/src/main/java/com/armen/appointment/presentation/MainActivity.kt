@@ -33,8 +33,6 @@ class MainActivity : ComponentActivity() {
                         val docId =
                             backStackEntry.arguments?.getString(Screen.Appointment.key)?.toInt()
                                 ?: -1
-//                        val doc = viewModel.doctorsList.value[docId?.toInt()
-//                            ?: throw RuntimeException("doc not found")]
                         AppointmentScreen(
                             docId = docId,
                             navHostController = navHostController,

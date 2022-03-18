@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.armen.appointment.domain.model.Doctor
 import com.armen.appointment.domain.usecase.DoctorsUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class AppointmentViewModel(
@@ -19,6 +21,9 @@ class AppointmentViewModel(
     val selectedTimeSlot: State<String> = _selectedTimeSlot
 
     private val _selectedDoctorId = mutableStateOf(-1)
+
+    private val _eventFlow = MutableSharedFlow<DoctorUpdatedCallback>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     fun setSelectedId(id: Int) {
         _selectedDoctorId.value = id
@@ -34,12 +39,16 @@ class AppointmentViewModel(
 
     fun isAnyTimeSlotSelected() = selectedTimeSlot.value.isNotEmpty()
 
-    fun bookClicked() { // check if any slot selected
+    fun bookClicked(text: String) {
         val doc = selectedDoctor.value
         viewModelScope.launch {
-            doctorsUseCase.updateDoctor(doc.copy(bookedSlots = doc.bookedSlots.toMutableList().apply {
-                add(selectedTimeSlot.value)
-            }))
+            doctorsUseCase.updateDoctor(
+                doc.copy(
+                    bookedSlots = doc.bookedSlots.toMutableList().apply {
+                        add(selectedTimeSlot.value)
+                    })
+            )
+            _eventFlow.emit(DoctorUpdatedCallback(text))
         }
     }
 
@@ -50,4 +59,6 @@ class AppointmentViewModel(
             }
         }
     }
+
+    class DoctorUpdatedCallback(val note: String)
 }

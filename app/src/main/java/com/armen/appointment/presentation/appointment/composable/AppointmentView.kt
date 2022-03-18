@@ -1,7 +1,6 @@
 package com.armen.appointment.presentation.appointment.composable
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.armen.appointment.presentation.Constants.Companion.TimesMap
 import com.armen.appointment.presentation.DefaultCard
 import com.armen.appointment.presentation.HorizontalDivider
@@ -30,7 +28,6 @@ import com.armen.appointment.ui.theme.PrimaryBlue
 @Composable
 fun Appointment(
     viewModel: AppointmentViewModel,
-    navController: NavHostController? = null,
     context: Context
 ) {
 
@@ -95,13 +92,7 @@ fun Appointment(
                         .padding(end = 16.dp)
                         .align(Alignment.CenterEnd),
                     onClick = {
-                        navController?.popBackStack()
-                        Toast.makeText(
-                            context,
-                            "Doctor booked at ${viewModel.selectedTimeSlot.value} ${textState.value.text}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        viewModel.bookClicked()
+                        viewModel.bookClicked(textState.value.text)
                     },
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if (isEnabled) PrimaryBlue else Color.Gray),
