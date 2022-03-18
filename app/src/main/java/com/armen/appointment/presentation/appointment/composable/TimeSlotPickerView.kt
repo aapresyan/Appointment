@@ -28,7 +28,7 @@ fun TimeSlotPickerView(
     LazyRow {
         items(slots) { time ->
             val isSelected = viewModel?.selectedTimeSlot?.value == time
-            val isAvailable = unavailableSlots?.contains(time) ?: viewModel?.isTimeSlotAvailable(time) == true
+            val isAvailable = unavailableSlots?.contains(time)?.not() ?: viewModel?.isTimeSlotAvailable(time) == true
 
             OutlinedButton(
                 shape = RoundedCornerShape(16.dp),
