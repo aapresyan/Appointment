@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
@@ -30,23 +31,9 @@ fun Appointment(
     context: Context
 ) {
 
-    val textState = remember { mutableStateOf(TextFieldValue()) }
-
     DefaultCard {
         Column(Modifier.fillMaxWidth()) {
             TimingView(context = context, viewModel = viewModel, clickable = true)
-            Spacer(modifier = Modifier.height(8.dp))
-            TextField(
-                value = textState.value,
-                onValueChange = { textState.value = it },
-                modifier = Modifier
-                    .fillMaxWidth(),
-                label = { Text(text = "Note") },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Gray,
-                    unfocusedLabelColor = Color.Gray
-                ),
-            )
             Spacer(modifier = Modifier.height(8.dp))
             Box(modifier = Modifier.fillMaxWidth()) {
                 val isEnabled = viewModel.isAnyTimeSlotSelected()
@@ -55,7 +42,7 @@ fun Appointment(
                         .padding(end = 16.dp)
                         .align(Alignment.CenterEnd),
                     onClick = {
-                        viewModel.bookClicked(textState.value.text)
+                        viewModel.timingConfirmed()
                     },
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if (isEnabled) PrimaryBlue else Color.Gray),
@@ -91,14 +78,14 @@ fun TimingView(context: Context, viewModel: AppointmentViewModel, unavailableSlo
                     .padding(top = 12.dp, start = 12.dp, bottom = 2.dp)
                     .align(Alignment.CenterVertically),
                 text = it,
-                color = Color.Gray,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.DarkGray,
                 fontSize = 14.sp
             )
         }
         TimesMap[it]?.let { list ->
             TimeSlotPickerView(slots = list, clickable = clickable, unavailableSlots, viewModel)
         }
+        HorizontalDivider(trim = 8.dp)
     }
-    HorizontalDivider()
 }
-

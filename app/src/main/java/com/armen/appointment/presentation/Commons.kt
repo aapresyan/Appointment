@@ -4,14 +4,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.armen.appointment.ui.theme.PrimaryBlue
@@ -31,8 +37,8 @@ fun HeaderText(text: String) {
 }
 
 @Composable
-fun HorizontalDivider() {
-    Divider(color = Color.Gray)
+fun HorizontalDivider(trim: Dp = 0.dp) {
+    Divider(color = Color.Gray, modifier = Modifier.padding(start = trim, end = trim))
 }
 
 fun Modifier.mainThemeModifier() =
@@ -61,3 +67,23 @@ fun DefaultCard(content: @Composable () -> Unit) =
         content()
     }
 
+@Composable
+fun TextFieldWithHint(
+    modifier: Modifier = Modifier,
+    state: MutableState<TextFieldValue>,
+    hint: String,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    icon: ImageVector? = null
+) =
+    TextField(
+        value = state.value,
+        onValueChange = { state.value = it },
+        label = { Text(text = hint) },
+        colors = TextFieldDefaults.textFieldColors(
+            unfocusedIndicatorColor = Color.Gray,
+            unfocusedLabelColor = Color.Gray
+        ),
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        modifier = modifier,
+        trailingIcon = { icon?.let { Icon(imageVector = it, contentDescription = null, tint = Color.Gray) } }
+    )

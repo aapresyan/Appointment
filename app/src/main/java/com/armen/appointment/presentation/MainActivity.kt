@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                                 ?: -1
                         AppointmentScreen(
                             docId = docId,
-                            navHostController = navHostController,
+                            mainController = navHostController,
                             context = applicationContext
                         )
                     }

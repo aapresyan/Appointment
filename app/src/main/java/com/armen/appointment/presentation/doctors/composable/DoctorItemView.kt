@@ -88,6 +88,7 @@ fun DoctorCard(
                             contentDescription = "heart",
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
+                                .padding(top = 2.5.dp)
                                 .size(12.dp)
                         )
                         Text(

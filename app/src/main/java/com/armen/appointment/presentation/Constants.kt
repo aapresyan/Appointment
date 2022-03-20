@@ -22,4 +22,8 @@ sealed class Screen(val key: String = "", val name: String) {
     object Doctor : Screen(name = "doctors")
 
     object Appointment : Screen(key = "docId", name = "appointment")
+
+    object Timing : Screen(name = "timings")
+
+    object UserDetails : Screen(name = "details")
 }

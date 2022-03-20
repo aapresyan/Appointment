@@ -2,6 +2,7 @@
 
 package com.armen.appointment.presentation.doctors.composable
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -11,9 +12,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.armen.appointment.presentation.Constants.Companion.DEFAULT_EXPERIENCE_RANGE
 import com.armen.appointment.presentation.DefaultCard
 import com.armen.appointment.presentation.HorizontalDivider
-import com.armen.appointment.presentation.Constants.Companion.DEFAULT_EXPERIENCE_RANGE
 import com.armen.appointment.presentation.doctors.DoctorsViewModel
 import com.armen.appointment.presentation.doctors.Gender
 
@@ -55,7 +56,11 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                     Text(
                         text = "All",
                         fontSize = 12.sp,
-                        modifier = Modifier.align(Alignment.CenterVertically)
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .clickable {
+                                select(Gender.NONE)
+                            }
                     )
                     RadioButton(
                         selected = isSelected(Gender.MALE),
@@ -66,7 +71,11 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                     Text(
                         text = "Male",
                         fontSize = 12.sp,
-                        modifier = Modifier.align(Alignment.CenterVertically)
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .clickable {
+                                select(Gender.MALE)
+                            }
                     )
                     RadioButton(
                         selected = isSelected(Gender.FEMALE),
@@ -77,7 +86,11 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                     Text(
                         text = "Female",
                         fontSize = 12.sp,
-                        modifier = Modifier.align(Alignment.CenterVertically)
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .clickable {
+                                select(Gender.FEMALE)
+                            }
                     )
                 }
             }

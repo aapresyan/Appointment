@@ -69,7 +69,7 @@ private fun DoctorsList(
                 DefaultCard {
                     Column(Modifier.fillMaxWidth()) {
                         Text(
-                            modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 12.dp),
+                            modifier = Modifier.padding(start = 32.dp, top = 8.dp, bottom = 12.dp),
                             text = "Timings",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
