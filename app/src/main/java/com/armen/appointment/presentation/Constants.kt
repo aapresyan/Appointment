@@ -19,11 +19,11 @@ sealed class Screen(val key: String = "", val name: String) {
 
     fun createRoute(key: String) = "$key/$name"
 
-    object Doctor : Screen(name = "doctors")
+    object Doctor : Screen(name = "Doctors")
 
-    object Appointment : Screen(key = "docId", name = "appointment")
+    object Appointment : Screen(key = "docId", name = "Appointment")
 
-    object Timing : Screen(name = "timings")
+    object Timing : Screen(name = "Time Slot")
 
-    object UserDetails : Screen(name = "details")
+    object UserDetails : Screen(name = "Patient Details")
 }

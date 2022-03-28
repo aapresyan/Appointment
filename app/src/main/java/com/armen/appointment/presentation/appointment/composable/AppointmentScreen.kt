@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,7 +16,7 @@ import com.armen.appointment.presentation.appointment.AppointmentViewModel
 import com.armen.appointment.presentation.doctors.composable.DoctorCard
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.getViewModel
-
+// common radiobutton, unit tests, dark mode, custom view
 @Composable
 fun AppointmentScreen(docId: Int, mainController: NavHostController, context: Context) {
 
@@ -35,21 +36,22 @@ fun AppointmentScreen(docId: Int, mainController: NavHostController, context: Co
                     mainController.popBackStack()
                 }
             }
-
         }
     }
 
     Column {
-        HeaderText(text = "Appointment")
+        HeaderText(text = viewModel.screenTitle.value)
         DoctorCard(doctor = doctor, drawButtons = false)
         NavHost(navController = navHostController, startDestination = Screen.Timing.name) {
             composable(Screen.Timing.getRoute()) {
+                viewModel.postScreenState(Screen.Timing)
                 Appointment(
                     viewModel,
                     context
                 )
             }
             composable(Screen.UserDetails.getRoute()) {
+                viewModel.postScreenState(Screen.UserDetails)
                 UserDetailsView(viewModel)
             }
         }

@@ -110,7 +110,7 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                         .padding(start = 128.dp)
                 ) {
                     RangeSlider(
-                        valueRange = 1f..20f,
+                        valueRange = DEFAULT_EXPERIENCE_RANGE,
                         values = viewModel?.filter?.value?.range ?: DEFAULT_EXPERIENCE_RANGE,
                         onValueChange = {
                             viewModel?.postAgeRange(it)

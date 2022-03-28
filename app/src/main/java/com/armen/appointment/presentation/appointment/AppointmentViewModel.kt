@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.armen.appointment.domain.model.Doctor
 import com.armen.appointment.domain.model.UserDetailsState
 import com.armen.appointment.domain.usecase.DoctorsUseCase
+import com.armen.appointment.presentation.Screen
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class AppointmentViewModel(
@@ -27,16 +29,11 @@ class AppointmentViewModel(
     private val _eventFlow = MutableSharedFlow<UiCallback>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _userDetails = mutableStateOf(
-        UserDetailsState(
-            mutableStateOf(TextFieldValue()),
-            mutableStateOf(TextFieldValue()),
-            mutableStateOf(TextFieldValue()),
-            mutableStateOf(TextFieldValue()),
-            mutableStateOf(true)
-        )
-    )
+    private val _userDetails = mutableStateOf(UserDetailsState())
     val userDetails: State<UserDetailsState> = _userDetails
+
+    private val _screenTitle = mutableStateOf("Time slot")
+    val screenTitle: State<String> = _screenTitle
 
     fun setSelectedId(id: Int) {
         selectedDoctorId.value = id
@@ -51,6 +48,10 @@ class AppointmentViewModel(
         !selectedDoctor.value.bookedSlots.contains(time)
 
     fun isAnyTimeSlotSelected() = selectedTimeSlot.value.isNotEmpty()
+
+    fun postScreenState(screen: Screen) {
+        _screenTitle.value = screen.name
+    }
 
     fun timingConfirmed() {
         viewModelScope.launch {
