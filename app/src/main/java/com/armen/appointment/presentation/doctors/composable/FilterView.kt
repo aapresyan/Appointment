@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.armen.appointment.presentation.Constants.Companion.DEFAULT_EXPERIENCE_RANGE
 import com.armen.appointment.presentation.DefaultCard
 import com.armen.appointment.presentation.HorizontalDivider
+import com.armen.appointment.presentation.Option
 import com.armen.appointment.presentation.doctors.DoctorsViewModel
 import com.armen.appointment.presentation.doctors.Gender
 
@@ -47,51 +48,15 @@ fun Filter(viewModel: DoctorsViewModel? = null) {
                     modifier = Modifier
                         .padding(start = 48.dp)
                 ) {
-                    RadioButton(
-                        selected = isSelected(Gender.NONE),
-                        onClick = { select(Gender.NONE) },
-                        colors = RadioButtonDefaults.colors(unselectedColor = Color.Gray),
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    )
-                    Text(
-                        text = "All",
-                        fontSize = 12.sp,
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .clickable {
-                                select(Gender.NONE)
-                            }
-                    )
-                    RadioButton(
-                        selected = isSelected(Gender.MALE),
-                        onClick = { select(Gender.MALE) },
-                        colors = RadioButtonDefaults.colors(unselectedColor = Color.Gray),
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    )
-                    Text(
-                        text = "Male",
-                        fontSize = 12.sp,
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .clickable {
-                                select(Gender.MALE)
-                            }
-                    )
-                    RadioButton(
-                        selected = isSelected(Gender.FEMALE),
-                        onClick = { select(Gender.FEMALE) },
-                        colors = RadioButtonDefaults.colors(unselectedColor = Color.Gray),
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    )
-                    Text(
-                        text = "Female",
-                        fontSize = 12.sp,
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .clickable {
-                                select(Gender.FEMALE)
-                            }
-                    )
+                    Option(text = "All", isChecked = isSelected(Gender.NONE)) {
+                        select(Gender.NONE)
+                    }
+                    Option(text = "Male", isChecked = isSelected(Gender.MALE)) {
+                        select(Gender.MALE)
+                    }
+                    Option(text = "Female", isChecked = isSelected(Gender.FEMALE)) {
+                        select(Gender.FEMALE)
+                    }
                 }
             }
             HorizontalDivider()

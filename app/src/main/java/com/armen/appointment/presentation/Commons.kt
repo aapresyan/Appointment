@@ -1,6 +1,7 @@
 package com.armen.appointment.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -87,3 +89,25 @@ fun TextFieldWithHint(
         modifier = modifier,
         trailingIcon = { icon?.let { Icon(imageVector = it, contentDescription = null, tint = Color.Gray) } }
     )
+
+@Composable
+fun Option(text: String, isChecked: Boolean, onChecked: () -> Unit) =
+    Row {
+        RadioButton(modifier = Modifier
+            .align(Alignment.CenterVertically),
+            selected = isChecked,
+            colors = RadioButtonDefaults.colors(
+                unselectedColor = Color.Gray,
+                selectedColor = PrimaryBlue
+            ),
+            onClick = onChecked)
+        Text(
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .clickable { onChecked() },
+            text = text,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 12.sp
+        )
+    }
+
