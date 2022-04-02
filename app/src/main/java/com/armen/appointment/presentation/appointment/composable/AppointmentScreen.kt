@@ -16,7 +16,7 @@ import com.armen.appointment.presentation.appointment.AppointmentViewModel
 import com.armen.appointment.presentation.doctors.composable.DoctorCard
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.getViewModel
-// unit tests, dark mode, custom view
+// unit tests, custom view
 @Composable
 fun AppointmentScreen(docId: Int, mainController: NavHostController, context: Context) {
 
