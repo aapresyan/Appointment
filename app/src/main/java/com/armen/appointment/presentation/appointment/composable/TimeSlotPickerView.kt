@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -41,13 +42,13 @@ fun TimeSlotPickerView(
                 enabled = clickable,
                 border = BorderStroke(
                     1.dp,
-                    color = if (isSelected) PrimaryBlue else Color.Transparent
+                    color = if (isSelected) MaterialTheme.colors.primary else Color.Transparent
                 )
             ) {
                 Text(
                     text = time,
                     textAlign = TextAlign.Center,
-                    color = if (!isAvailable) Color.Red else if (isSelected) PrimaryBlue else Color.Gray,
+                    color = if (!isAvailable) Color.Red else if (isSelected) MaterialTheme.colors.primary else MaterialTheme.colors.secondaryVariant,
                     fontSize = 10.sp
                 )
             }

@@ -2,14 +2,13 @@
 
 package com.armen.appointment.presentation.doctors.composable
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.RangeSlider
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.armen.appointment.presentation.Constants.Companion.DEFAULT_EXPERIENCE_RANGE
@@ -21,7 +20,6 @@ import com.armen.appointment.presentation.doctors.Gender
 
 
 @OptIn(ExperimentalMaterialApi::class)
-@Preview
 @Composable
 fun Filter(viewModel: DoctorsViewModel? = null) {
     DefaultCard {

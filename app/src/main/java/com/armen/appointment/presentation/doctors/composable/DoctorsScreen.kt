@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -82,34 +83,6 @@ private fun DoctorsList(
                         )
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-private fun DoctorsRadioGroup(viewModel: DoctorsViewModel) {
-    Row(modifier = Modifier.padding(bottom = 8.dp)) {
-        Tab.values().forEach { tab ->
-            val isSelected = tab == viewModel.selectedTab.value
-            OutlinedButton(
-                onClick = { viewModel.postSelectedTab(tab) },
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier
-                    .background(
-                        Color.Transparent
-                    )
-                    .padding(4.dp), border = BorderStroke(1.dp, Color.Gray),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    backgroundColor = if (isSelected)
-                        Color.White else Color.Transparent
-                )
-            ) {
-                Text(
-                    text = tab.value,
-                    color = if (isSelected)
-                        Color.Blue else Color.Gray,
-                )
             }
         }
     }

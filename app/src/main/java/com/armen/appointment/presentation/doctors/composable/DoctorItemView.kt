@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -53,7 +54,7 @@ fun DoctorCard(
                         .padding(start = 16.dp, top = 16.dp)
                         .size(64.dp)
                         .clip(CircleShape)
-                        .border(2.dp, Color.Gray, CircleShape)
+                        .border(2.dp, MaterialTheme.colors.secondaryVariant, CircleShape)
                 )
             }
             Column(
@@ -129,10 +130,10 @@ fun DoctorCard(
                                 showTimings?.invoke()
                             },
                             shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.White),
-                            border = BorderStroke(1.dp, Color.Gray)
+                            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = MaterialTheme.colors.background),
+                            border = BorderStroke(1.dp, MaterialTheme.colors.secondaryVariant)
                         ) {
-                            Text("Timing", color = Color.Gray, fontSize = 10.sp)
+                            Text("Timing", color = MaterialTheme.colors.secondaryVariant, fontSize = 10.sp)
                         }
                         OutlinedButton(
                             onClick = {
